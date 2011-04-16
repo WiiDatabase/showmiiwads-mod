@@ -1,0 +1,30 @@
+﻿-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+           libWiiSharp
+            by Leathl
+   libwiisharp.googlecode.com
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+
+Changelog:
+-=-=-=-=-=-
+
+Version 0.3
+	- Added support to change the common key index of the ticket in the WAD class
+	- Made the sorting of wad/tmd contents optional (off by default!)
+
+Version 0.21
+	- Fixed smpl region not read in Wave class
+
+Version 0.2
+	- Added support to pass streams
+	- Speed up in TPL conversion
+	- Further changes in TPL class (e.g. changed saving to be compatible with official TPL files)
+	- Fixed IA8 TPL code (from/to)
+	- Fixed CI14X2 TPL code (from)
+	- Added TPL conversion to CI4 and CI8
+	- Added BNS to Wave conversion
+	- Wave class completely rewritten
+
+Version 0.1
+	- Initial Release

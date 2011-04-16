@@ -1,0 +1,161 @@
+﻿//French Translations by carbonyle and Cyan
+*Français*
+Fichier
+Langage
+Aide
+Sauvegarder les dossiers
+Rafraîchir
+Choisissez le dossier où les wad seront créés
+Fermer && ne pas sauvegarder
+À-propos
+Nom de fichier
+Title ID
+Blocs
+Taille du fichier
+IOS requis
+Attribut de région
+Contenu
+Chemin
+Fichiers
+À-propos
+Échec lors du changement du Title ID !
+Erreur
+Choisissez un dossier
+Éditer
+Changer le Title ID
+Renommer
+Changer l'attribut de région
+Options
+Quitter
+Annuler
+Renommer
+Entrez un nouveau nom ou une nouvelle matrice (template).<s><s>Variables
+Effacer
+Le fichier n'existe pas !
+Effacer le fichier ?
+Voulez-vous vraiment effacer ce(s) {0} fichier(s) ?
+Ajuster la taille des colonnes automatiquement
+Format de la texture
+Taille
+Dossiers
+Retirer ce dossier
+Un dossier sera créé pour chaque fichier
+Extraire
+Changer le Title ID
+Saisissez le nouveau Title ID
+Le Title ID doit contenir uniquement des caractères et des chiffres !
+Le Title ID doit être composé de 4 caractères !
+Ouvrir le dossier
+Copier
+Couper
+Coller
+Le fichier existe déjà. Voulez-vous remplacer le fichier existant ?
+Fermer && sauvegarder
+Remplacer ?
+Le fichier (common-)key.bin doit être présent dans le dossier de l'application !
+La Common-Key est absente
+Sauvegarder le Wad
+Dans le dossier
+Choisissez le dossier de la sauvegarde de la NAND
+Vous devez définir le chemin de votre sauvegarde de NAND (Options) !
+Sauvegarde de NAND inexistante
+Sauvegarder
+Sur la NAND
+Choisir le chemin de sauvegarde de la NAND
+Les fonctions d'édition sont limités aux titres des chaînes !
+Fichiers slang
+Le fichier slang est invalide !
+Information
+{0} Erreurs survenues
+Archive U8 décompressée avec succès
+Êtes-vous sûr ?
+Il n'y a aucun Wad à dézoner dans ce dossier !
+Conversion de l'image en TPL réussi
+Exporter dans le fichier
+Montrer le chemin dans le nom de groupe
+Changer le titre de la chaîne
+Choisissez le dossier incluant les contenus à empaqueter
+Le titre de la chaîne n'a pas pu être trouvé !
+Ouverts récemment
+Depuis le fichier
+Outils
+Voir
+Empaqueter le Wad
+Empaqueter le Wad (sans Trailer)
+Il manque des fichiers !
+Ajouter à la liste
+Installation
+Jeter
+Titres installés
+Version
+Type
+Titre de la chaîne
+Fichier
+Dossier
+Tous les fichiers wads dans le dossier séléctionné seront installés
+Ajouter les sous-dossiers
+Choisissez le dossier à compresser en archive U8
+La prévisualisation fonctionne uniquement sur les chaînes !
+Le fichier n'est pas une archive U8 valide !
+Seul les TPL contenant 1 texture sont supportés !
+La texture possède un format non supporté !
+Prévisualisation
+Décompresser l'archive U8
+Convertir le Tpl en image
+Fermer
+Tout sauvegarder
+Images de bannière
+Images d'icone
+Les deux
+Les chaînes cachées n'ont pas de bannières ou d'icones !
+Veuillez saisir '{0}' afin de créer '{1}'
+Vous auriez du saisir '{0}' !
+Créer la Common-Key
+'{0}' existe déjà !
+Vous avez déjà la dernière version.
+La version {0} est disponible.<s>Vous la trouverez ici : {1}<s>Voulez-vous la télécharger ?
+Recherche de mise à jour
+Sauvegarde restaurée avec succès
+Aucune sauvegarde de ce fichier n'a été créée !
+Créer une sauvegarde avant l'édition d'un fichier
+Restauration
+Est-ce que vous désirez que votre archive U8 soit compressée en Lz77 ?<s>Ne compressez pas vos fichiers 00000000.app !
+Question
+Téléchargement terminé !
+Montrer l'écran de démarrage
+Saisissez les noms des chaînes
+Archive U8 compressée avec succès
+Le fichier 00000000.app n'est pas valide<s>Le fichier à été enregistré sans en-tête (header) !
+Fichier compressé avec succès
+Fichier décompressé avec succès
+Insertion du nouveau fichier Dol réussi !
+Insérer un Dol
+Modifier l'emplacement de l'IOS
+Modifier la version du Titre
+Avec l'en-tête  IMD5
+Avec l'en-tête IMET
+Sans en-tête
+Compresser Lz77
+Décompresser Lz77
+En RGB565 (Qualité moyenne)
+En RGB5A3 (Basse qualité)
+En RGBA8 (Haute qualité)
+Retirer tous les dossiers
+Rafraîchir ce dossier
+Sauvegarder
+Restaurer
+Tout sauvegarder
+Tout restaurer
+Données de sauvegarde
+Convertir l'image en Tpl
+Empaqueter l'archive U8
+Saisissez la version du Titre
+Saisissez une nouvelle version du Titre.<s>Veuillez noter que le maximum est 65535.
+Vous devez saisir un nombre entre 1 et 65535
+Saisissez l'emplacement de l'IOS
+Saisissez le nouvel emplacement d'installation de l'IOS
+Vous devez saisir un emplacement existant
+{0} erreur(s) occasionée(s) !
+Remplacer
+Portable Mode
+Extract BootMii Dump

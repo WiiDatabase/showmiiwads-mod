@@ -1,0 +1,161 @@
+﻿//Norwegian Translation by pesaroso
+*Norsk*
+Fil
+Språk
+Hjelp
+Lagringsmappe
+Oppdater
+Velg mappen hvor de pakkede wad-filene vil bli lagret
+Lukk && Forkast
+Om
+Filnavn
+Tittel-ID
+Datablokker
+Filstørrelse
+IOS-flagg
+Region-flagg
+Innhold
+Sti
+Filer
+Om
+Endring av tittel-ID mislyktes!
+Feil
+Velg en mappe
+Endre
+Endre tittel-ID
+Endre navn
+Endre region-flagg
+Alternativer
+Avslutt
+Avbryt
+Gi nytt navn
+Vennligst skriv inn et nytt navn eller mal.<s><s>Variabler
+Slett
+Filen finnes ikke!
+Slett fil?
+Vil du virkelig slette {0} fil(er)?
+Endre kolonnestørrelse automatisk
+Teksturformat
+Størrelse
+Mapper
+Fjern denne mappen
+En separat mappe vil bli opprettet for hver fil
+Pakk ut
+Endre tittel-ID
+Skriv inn ny tittel-ID
+Tittel-IDen må kun inneholde bokstaver og tall!
+Tittel-IDen må være på minimum 4 tegn!
+Åpne mappe
+Kopier
+Klipp ut
+Lim inn
+Den angitte filen finnes allerede, vil du overskrive den?
+Lukk && Lagre
+Overskrive?
+(common-)key.bin må være i "application"-mappen!
+Fant ikke Common-Key
+Lagre WAD
+Til mappe
+Velg målmappe for NAND-Backup
+Du må definere målmappen til NAND-Backup (Alternativer)!
+Fant ikke NAND-Backup
+Lagre
+Til NAND
+Endre målmappen til NAND-Backup
+Endringsfunksjonen er begrenset til kanal-titler (Channel titles)!
+Språkfiler
+Språkfilen er ugyldig!
+Informasjon
+{0} feil oppstod
+Utpakkingen av U8-arkiv var vellykket
+Er du sikker?
+Det er ingen WADs å gjøre regionfri i denne mappen!
+Konvertertering av bilde til Tpl var vellykket
+Eksporter til fil
+Vis målmappe i gruppenavn
+Endre kanal-tittel (Channel title)
+Velg mappen med innhold for å pakke
+Kanal-tittelen (Channel title) ble ikke funnet!
+Nylig åpnet
+Fra fil
+Verktøy
+Vis
+Pakk WAD
+Pakk WAD (uten Trailer)
+Det mangler filer!
+Kø
+Installer
+Kast
+Installerte titler
+Versjon
+Type
+Kanal-tittel (Channel title)
+Fil
+Mappe
+Alle WAD-filer i den valgte mappen vil bli installert
+Legg til undermappe(r)
+Velg mappe for å pakke til U8-arkiv
+Forhåndsvisning fungerer kun med kanaler!
+Filen er ikke et gyldig U8-arkiv!
+Kun TPL-filer som inneholder 1 tekstur er supportert!
+Teksturen har et usupportert format!
+Forhåndsvis
+Pakk ut U8-arkiv
+Konverter Tpl til bilde
+Lukk
+Lagre alle
+Fanebilder (banner images)
+Ikonbilder (icon images)
+Begge
+Skjult kanal har hverken faner eller ikoner!
+Vennligst trykk '{0}' for å opprette '{1}'
+Du skulle trykket '{0}'!
+Opprett Common-Key
+'{0}' finnes allerede!
+Du har den nyeste versjonen.
+Versjon {0} er tilgjenglig.<s>Skaff den på: {1}<s>Vil du den skal lastes ned?
+Sjekk for oppdateringer
+Backup er gjenopprettet
+Ingen backup av denne filen har blitt opprettet!
+Opprett backup(er) før endring
+Gjenopprett backup
+Skal den resulterende U8-filen være Lz77-komprimert?<s>Ikke komprimer 00000000.app-filer!
+Spørsmål
+Nedlasting fullført!
+Vis oppstartsbilde
+Skriv inn kanal-titler (Channel Titles)
+U8-arkiv ble vellykket pakket
+Dette er ingen gyldig 00000000.app<s>Filen var lagret uten en header!
+Filen ble vellykket komprimert
+Filen ble vellykket dekomprimert
+Innsetting av ny Dol-fil var vellykket
+Sett inn Dol
+Endre IOS-spor
+Endre tittelversjon
+Med IMD5-header
+Med IMET-header
+Uten header
+Lz77 komprimering
+Lz77 dekomprimering
+Som RGB565 (moderat kvalitet)
+Som RGB5A3 (lav kvalitet)
+Som RGBA8 (høy kvalitet)
+Fjern alle mapper
+Oppdater denne mappen
+Backup
+Gjenopprett
+Ta backup av alt
+Gjenopprett alt
+Lagringsdata
+Konverter bilde til Tpl
+Pakk U8-arkiv
+Skriv inn tittelversjon
+Skriv inn en ny tittelversjon.<s>Vennligst husk det er maksimalt 65535
+Du må skrive inn en korrekt tittelversjon
+Skriv inn IOS-spor
+Skriv inn et nytt IOS-spor
+Du må skrive inn et korrekt spornummer
+{0} feil inntraff!
+Erstatter
+Portable Mode
+Extract BootMii Dump

@@ -1,0 +1,161 @@
+﻿//Spanish Translation by putifruti
+*Español*
+Archivo
+Idioma
+Ayuda
+Guardar carpetas
+Actualizar
+Choose the folder where the packed wads will be saved //Not translated
+Close && Discard //Not translated
+Acerca de
+Nombre
+Title ID
+Bloques
+Tamaño
+IOS Flag
+Region Flag
+Content
+Ruta
+Ficheros
+Acerca de
+Cambio de Title ID fallido!
+Error
+Escoge una carpeta
+Editar
+Cambiar Title ID
+Renombrar
+Cambiar Region Flag
+Opciones
+Salir
+Cancelar
+Renamombrar
+Please enter a new name or template.<s><s>Variables //Not translated
+Eliminar
+¡El fichero no existe!
+¿Eliminar fichero?
+¿Realmente deseas eliminar {0} ficheros?
+Ajustar columnas automáticamente
+Texture Format
+Tamaño
+Carpetas
+Eliminar esta carpeta
+A separate folder will be created for each file //To be translated
+Extraer
+Cambiar Title ID
+Introduce el nuevo Title ID
+¡El Title ID solo puede contener números y letras!
+¡El tamaño del Title ID debe ser de 4 carácteres!
+Abrir carpeta
+Copiar
+Cortar
+Pegar
+El fichero destino existe. ¿Quieres sobreescribir?
+Close && Save //Not translated
+¿Sobreescribir?
+¡El fichero (common-)key.bin debe estar en la carpeta de la aplicación!
+Common-Key no encontrada
+Guardar Wad
+A carpeta
+Escoge el directorio de tu Backup NAND
+¡Necesitas definir la ruta a tu Backup NAND (Optiones)!
+Backup NAND no encontrada
+Guardar
+A NAND
+Cambiar ruta Backup NAND
+¡La edición de características está limitada a Canales(Channel Titles)!
+Ficheros Slang
+¡El fichero slang no es válido!
+Información
+{0} Errores occurridos
+Successfully unpacked U8 Archive //Not translated
+¿Estás seguro?
+¡No hay Wads para cambiar a Region Free en esta carpeta!
+Successfully converted Image to Tpl //Not translated
+Exportar a Fichero
+Mostrar ruta en Groupnames
+Cambiar Título de canal
+Escoge la carpeta que contiene los contenidos a empaquetar
+¡No se encuentra el Canal!
+Abiertos recientemente
+Desde fichero
+Herramientas
+Ver
+Empaquetar Wad
+Empaquetar Wad (sin Trailer)
+¡Faltan ficheros!
+Cola
+Instalar
+Descartar
+Titles instalados
+Versión
+Tipo
+Título
+Fichero
+Carpeta
+Todos los ficheros wad de la carpeta seleccionada serán instalados
+Añadir subcarpetas
+Select the Folder to pack to a U8 Archive //Not translated
+¡La vista previa solo funciona con Canales!
+¡El fichero no es un archivo U8 válido!
+¡Solo son soportados ficheros TPL que contengan 1 textura!
+¡La textura tiene un formato no soportado!
+Vista previa
+Desempaquetar archivo U8
+Convertir Tpl a Png //Changed
+Cerrar
+Guardar todo
+Imagenes del Banner
+Imagenes del Icono
+Ambas
+¡Los canales ocultos no tienen Banners o Iconos!
+Escribe '{0}' para generar '{1}'
+¡Deberias haber escrito '{0}'!
+Crear Common-Key
+¡'{0}' ya existe!
+Ya tienes la última versión.
+Versión {0} disponible.<s>Consiguela en: {1}<s>Do you want it to be downloaded? //Not translated
+Buscar actualización
+Backup ha sido restaurado
+¡No se ha creado un Backup de este fichero!
+Crear Backups antes de editar
+Restaurar Backup
+Shall the resultant U8 file be Lz77 compressed?<s>Do not compress 00000000.app files! //Not translated
+Question //Not translated
+Descarga completa!
+Mostrar pantalla de bienvenida
+Enter Channel Titles
+Successfully packed U8 Archive
+This is no valid 00000000.app<s>The file was saved without a header!
+Successfully compressed file
+Successfully decompressed file
+Successfully inserted new Dol file
+Insert Dol
+Change IOS Slot
+Change Title Version
+With IMD5 Header
+With IMET Header
+Without Header
+Lz77 Compress
+Lz77 Decompress
+As RGB565 (Moderate Quality)
+As RGB5A3 (Low Quality)
+As RGBA8 (High Quality)
+Remove All Folders
+Refresh This Folder
+Backup
+Restore
+Backup All
+Restore All
+Savedata
+Convert Image To Tpl
+Pack U8 Archive
+Enter Title Version
+Enter a new Title Version.<s>Please note that the maximum is 65535.
+You must enter a proper Title Version
+Enter IOS Slot
+Enter a new IOS Slot
+You must enter a proper Slot Number
+{0} error(s) occurred!
+Replace
+Portable Mode
+Extract BootMii Dump

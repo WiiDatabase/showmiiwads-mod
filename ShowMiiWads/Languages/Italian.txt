@@ -1,0 +1,161 @@
+﻿//Italian Translation by Tetsuo Shima
+*Italiano*
+File
+Lingua
+Aiuto
+Salva Cartelle
+Aggiorna
+Scegli la cartella in cui salvare i wad creati
+Chiudi && Scarta
+Informazioni
+Nome File
+Title ID
+Blocchi
+Dimensione File
+IOS Flag
+Region Flag
+Contenuto
+Percorso
+Files
+Informazioni
+Cambio del Title ID fallito!
+Errore
+Scegli una cartella
+Modifica
+Cambia Title ID
+Rinomina
+Cambia Region Flag
+Opzioni
+Esci
+Annulla
+Rinomina
+Per favore inserisci un nuovo nome o modello.<s><s>Variabili
+Cancella
+Il File non esiste!
+Cancellare il File?
+Vuoi veramente cancellare {0} File?
+Ridimensiona Colonne Automaticamente
+Formato Texture
+Dimensione
+Cartelle
+Elimina questa cartella
+Una cartella separata verrà creata per ogni File
+Estrai
+Cambia Title ID
+Enter the new Title ID
+Il Title ID può contenere solo caratteri e numeri!
+Il Title ID deve essere di 4 caratteri!
+Apri Cartella
+Copia
+Taglia
+Incolla
+Il file di destinazione esiste già. Vuoi sovrascriverlo?
+Chiudi && Salva
+Sovrascrivere?
+Il file (common-)key.bin deve essere nella cartella dell'applicazione!
+Common-Key non trovata
+Salva Wad
+Nella cartella
+Scegli la cartella per il tuo NAND Backup
+Devi definire il percorso del NAND Backup (Opzioni)!
+NAND Backup non trovato
+Salva
+Nella NAND
+Cambia il percorso del NAND Backup
+Le funzioni di modifica sono limitate ai Titoli dei Canali!
+Slang Files
+Lo Slang File non è valido!
+Informazioni
+{0} Errori verificati
+Archivio U8 estratto con successo
+Sei sicuro?
+Non ci sono Wad da trasformare in Region Free in questa cartella!
+Conversione Immagine in Tpl riuscita
+Esporta in un file
+Mostra Percorso In Nome Gruppo
+Cambia Titolo al Canale
+Scegli la cartella che include i contenuti da Confezionare
+Il Titolo del Canale non è stato trovato!
+Aperti di recente
+Da File
+Strumenti
+Vista
+Confeziona Wad
+Confeziona Wad (senza Trailer)
+Ci sono Files mancanti!
+Coda
+Installa
+Scarta
+Titoli Installati
+Versione
+Tipo
+Titolo Canale
+File
+Cartella
+Tutti i file WAD nella cartella selezionata verranno installati
+Aggiungi Sottocartelle
+Seleziona la Cartella da inserire in un Archivio U8
+Anteprima funzionante solo per i Canali!
+Il File non è un valido Archivio U8!
+Sono supportati solo i file TPL contenenti 1 Texture!
+La Texture ha un formato non supportato!
+Anteprima
+Scompatta Archivio U8
+Converti Tpl in Immagine
+Chiudi
+Salva Tutto
+Immagini Banner
+Icone
+Entrambi
+I Canali Nascosti non hanno Banner o Icone!
+Prego digitare '{0}' per creare '{1}'
+Avresti dovuto scrivere '{0}'!
+Crea Common-Key
+'{0}' già esistente!
+Hai già l'ultima versione.
+La Versione {0} è disponibile.<s>Prendila a: {1}<s>Vuoi scaricarla?
+Controlla Aggiornamenti
+Il Backup è stato ripristinato
+Il Backup di questo file non è stato creato!
+Crea Backups Prima Di Modificare
+Ripristina Backup
+Comprimere il risultante file U8 con Lz77?<s>Non comprimere i file 00000000.app!
+Domanda
+Download completato!
+Mostra Splash Screen
+Inserisci Titoli Canali
+Archivio U8 creato con successo
+Questo non è un valido 00000000.app<s>Il file è stato salvato senza un header!
+Compressione File riuscita
+Decompressione File riuscita
+Nuovo file Dol inserito correttamente
+Inserisci Dol
+Cambia Slot IOS
+Cambia Versione Titolo
+Con Header IMD5
+Con Header IMET
+Senza Header
+Compressione Lz77
+Decompressione Lz77
+Come RGB565 (Media Qualità)
+Come RGB5A3 (Bassa Qualità)
+Come RGBA8 (Alta Qualità)
+Elimina Tutte Le Cartelle
+Aggiorna Questa Cartella
+Backup
+Ripristina
+Backup Tutto
+Ripristina Tutto
+Dati Salvataggio
+Converti Immagine in Tpl
+Crea Archivio U8
+Inserisci Versione Titolo
+Inserisci una nuova Versione Titolo.<s>Notare che il massimo è 65535.
+Devi inserire una Versione Titolo appropriata
+Inserisci Slot IOS
+Inserisci un nuovo Slot IOS
+Devi inserire un Numero Slot appropriato
+{0} errore(i) verificato(i)!
+Sostituire
+Portable Mode
+Extract BootMii Dump

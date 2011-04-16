@@ -1,0 +1,160 @@
+﻿*Deutsch*
+Datei
+Sprache
+Hilfe
+Ordner Speichern
+Aktualisieren
+Wählen sie den Ordner, in dem die gepackten Wads gespeichert werden
+Schließen && Verwerfen
+Über
+Dateiname
+Title ID
+Blöcke
+Dateigröße
+IOS Flag
+Region Flag
+Content
+Pfad
+Dateien
+Über
+Ändern der Title ID fehlgeschlagen!
+Fehler
+Wählen sie ein Verzeichnis
+Bearbeiten
+Title ID Ändern
+Umbenennen
+Region Flag Ändern
+Optionen
+Beenden
+Abbrechen
+Umbenennen
+Bitten geben sie einen neuen Namen oder ein Muster ein.<s><s>Variablen
+Löschen
+Datei ist nicht vorhanden!
+Datei löschen?
+Möchten sie {0} Datei(en) wirklich löschen?
+Spalten Automatisch Anpassen
+Texturformat
+Größe
+Ordner
+Diesen Ordner Entfernen
+Für jede Datei wird ein separater Ordner erstellt
+Extrahieren
+Title ID ändern
+Geben sie die neue Title ID ein
+Die Title ID darf nur aus Buchstaben und Zahlen bestehen!
+Die Title ID muss 4 Zeichen lang sein!
+Ordner Öffnen
+Kopieren
+Ausschneiden
+Einfügen
+Die Zieldatei existiert bereits. Wollen sie sie überschreiben?
+Schließen && Speichern
+Überschreiben?
+Die (common-)key.bin befindet sich nicht im Programmverzeichnis!
+Common-Key nicht gefunden
+Wad Speichern
+In Ordner
+Wählen sie den NAND Backup Ordner aus
+Sie müssen den Pfad zu ihrem NAND Backup festlegen (Optionen)!
+NAND Backup nicht gefunden
+Speichern
+In NAND
+NAND Backup Pfad Ändern
+Editing Funktionen sind nur auf Channel anwendbar!
+Slang Dateien
+Die slang Datei ist ungültig!
+Information
+{0} Fehler sind aufgetreten
+U8 Archiv erfolgreich entpackt
+Sind sie sicher?
+Es sind keine Wads, die zu Region Free geändert werden können, im Ordner!
+Bild wurde erfolgreich zu Tpl konvertiert
+In Datei Exportieren
+Zeige Pfad In Gruppennamen
+Channel Title Ändern
+Wählen sie den Ordner mit den zu packenden Inhalten
+Der Channel Title konnte nicht gefunden werden!
+Zuletzt Geöffnet
+Aus Datei
+Tools
+Ansicht
+Wad Packen
+Wad Packen (ohne Trailer)
+Es fehlen Dateien!
+Warteschlange
+Installieren
+Verwerfen
+Installierte Titel
+Version
+Typ
+Channel Title
+Datei
+Ordner
+Alle Wad Dateien im gewählten Ordner weden installiert
+Unterordner Hinzufügen
+Wählen sie den Ordner, den sie zu einem U8 Archiv packen wollen
+Die Vorschau ist nur für Channel!
+Datei ist kein gültiges U8 Archiv!
+Nur TPL Dateien mit 1 Textur werden unterstützt!
+Die Textur hat ein ungültiges Format!
+Vorschau
+U8 Archiv Entpacken
+Tpl Zu Bilddatei Konvertieren
+Schließen
+Alle Speichern
+Banner Bilder
+Icon Bilder
+Beide
+Verstecke Channel haben keine Banner oder Icons!
+Bitte '{0}' eingeben, um '{1}' zu erstellen
+Nicht '{0}' eingegeben!
+Erstelle Common-Key
+'{0}' existiert bereits!
+Es ist keine neue Version verfügbar.
+Version {0} ist verfügbar.<s>Download: {1}<s>Soll die Datei heruntergeladen werden?
+Nach Updates Suchen
+Backup wurde wiederhergestellt
+Von dieser Datei wurde kein Backup gemacht!
+Erstelle Backups Vor Dem Editieren
+Backup Wiederherstellen
+Soll die resultierende U8 Datei Lz77 komprimiert werden?<s>Komprimieren sie keine 00000000.app Dateien!
+Frage
+Download abgeschlossen!
+Zeige Splash Screen
+Channel Titles eingeben
+U8 Archiv erfolgreich gepackt
+Dies ist keine gültige 00000000.app<s>Die Datei wurde ohne Header gespeichert!
+Datei erfolgreich komprimiert
+Datei erfolgreich dekomprimiert
+Dol Datei erfolgreich eingefügt
+Dol Einfügen
+IOS Slot Ändern
+Title Version Ändern
+Mit IMD5 Header
+Mit IMET Header
+Ohne Header
+Lz77 Komprimieren
+Lz77 Dekomprimieren
+Als RGB565 (Mittlere Qualität)
+Als RGB5A3 (Niedrige Qualität)
+Als RGBA8 (Hohe Qualität)
+Alle Ordner Entfernen
+Diesen Ordner Aktualisieren
+Sichern
+Wiederherstellen
+Alle Sichern
+Alle Wiederherstellen
+Speicherdaten
+Bilddatei Zu Tpl Konvertieren
+U8 Archiv Packen
+Title Version Eingeben
+Geben sie eine neue Title Version ein.<s>Das Maximum ist 65535.
+Das ist keine gültige Title Version
+IOS Slot eingeben
+Geben sie einen neuen IOS Slot ein
+Das ist kein gültiger IOS Slot
+{0} Fehler aufgetreten!
+Ersetzen
+Portable - Modus
+Extrahiere BootMii Dump

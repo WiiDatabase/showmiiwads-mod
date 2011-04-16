@@ -1,0 +1,80 @@
+ShowMiiWads - Frequently Asked Questions
+
+
+
+Q: How do I add folders?
+A: Either use the menu ('File -> Open') or drag one or multiple folders and or wad files onto the application.
+   You can choose to add all subfolders that contain wad files through 'Options -> Add Subfolders'
+   
+Q: What exactly do the columns mean?
+A: Filename - The name of the wad file
+   Type - The type of the channel, can be either a System Title (IOS, Menu, ...) or a Channel (System Channel, 'Normal' Channel, ...)
+   Channel Title - The title displayed when holding the Wiimote cursor over a channel icon, stored in 7 different languages in each wad
+   Title ID - The unique ID with which the channel will be installed, for IOS wads it's the IOS nr.
+   Blocks - The approx. Blocks the wad will use on NAND
+   Version - The version of the wad file
+   Filesize - The approx. size the wad will use on NAND
+   IOS Flag - The IOS that is required by the channel to run - If you don't have this, chances are good your channel won't work
+   Region Flag - The region of the wad file
+   Content - The amount of content files inside the wad
+   Path - The path where the wad will be installed to on NAND - This is the Title ID in bytes
+
+Q: Some wads in my folder won't be displayed?
+A: If a wad file is corrupted or damaged, so that it can't be read properly,
+   it just won't be displayed.
+   This doesn't mean that every wad file which is not displayed is corrupt.
+   It could be an error with the application or something.
+
+Q: No Channel Title is displayed at all?<br>
+A: It might be that you don't have the (common-)key.bin in the application directory.
+Use 'Tools -> Create Common-Key' to create it and refresh.
+Also consider that System Wads and Hidden Channel don't have Channel Titles.
+
+Q: Why is the size a range for some wads?
+A: The Wii uses shared contents, meaning that some wads use exactly the same content files.
+   Having that files multiple times on NAND would be a waste of space, thus these contents are stored in /shared1/.
+   Now, the smaller size suggests you already got all shared contents required by the wad file in your /shared1/ folder (so only non-shared contents will be installed,
+   while the bigger size suggests that you got none of them (so all contents will be installed).
+   
+Q: What's the Common-Key and where can I get it?
+A: The Common-Key is needed to decrypt the Title Key of a wad file, which is used to decrypt the content.
+   You can simply create it using 'Tools -> Create Common-Key.bin'.
+   The Common-Key itself is NOT stored in the application. It's built using your input and some bytes that are stored encrypted.
+   
+Q: How can I see what a Banner or Icon of a wad looks like?
+A: Right-click the wad and 'Preview' to see the Banner and Icon images.
+   
+Q: How can I see the installed titles of my NAND Backup?
+A: First, set the Path to your NAND Backup ('Options -> Change NAND Backup Path'), it will be saved in the config, so you only need to do this once.
+   Then just click 'View -> ShowMiiNand'.
+   
+Q: How can I install titles to my NAND Backup?
+A: In ShowMiiWads: Right-click a wad an choose 'Extract -> To NAND'.
+   In ShowMiiNand: Either use the menu or the installation queue by dragging wads or folders onto the ShowMiiNand window.
+				   'Install' and 'Discard' will appear at the bottom of the window.
+
+Q: How can I delete titles from my NAND Backup?
+A: Just right-click any installed title and use 'Delete'.
+
+Q: How can I pack a wad from a title on my NAND Backup?
+A: Right-click the title and use 'Pack To Wad'. Of course, all required shared contents must be in the /shared1/ folder.
+   
+Q: What's the difference between 'Pack Wad' and 'Pack Wad (without Trailer)'?
+A: Most custom channels distributed on the internet have a footer inserted in the wad file.
+   This is the so called 'trailer'. Mostly the 00.app is stored in it's decrypted form there.
+   It's just a waste of space, so you can use the 'Pack Wad (without Trailer)' function to save some discspace.
+   
+Q: What's the 'Unpack U8 Archive' function for?
+A: The Wii uses so called 'U8 Archives' (Not an official name).
+   The common U8 Archives we have to deal with are the '00000000.app', 'banner.bin' and 'icon.bin' and 'opening.bnr' (discs).
+   Visit the WiiBrew Article for further information: http://wiibrew.org/wiki/U8_archive
+   
+Q: What's the 'Convert Tpl To Png' function good for?
+A: If you have a Tpl somewhere and want to know what it looks like, just convert it to a Png.
+   
+Q: I changed a wads region, but only get a blackscreen when running it
+A: Region changing of wads won't always work - Better get a wad of your region.
+   
+Q: I think I discovered a bug, what now?
+A: Please be sure that it's not a corrupted wad file.
+   If it really seems to be a bug with ShowMiiWads, report it here: http://code.google.com/p/showmiiwads/issues/list

@@ -1,0 +1,161 @@
+﻿// Portuguese(PT) Translation by Sky8000
+*Português*
+Ficheiro
+Idioma
+Ajuda
+Guardar as Pastas
+Actualizar
+Escolha a pasta para guardar os wads criados
+Fechar && Descartar
+Acerca de
+Nome do ficheiro
+ID do Título
+Blocos
+Tamanho
+IOS 
+Região
+Conteúdo
+Pasta
+Ficheiros
+Acerca de
+A alteração do ID do Título falhou!
+Erro
+Seleccione a pasta
+Editar
+Alterar o ID do Título
+Renomear
+Alterar Flag de Região
+Opções
+Sair
+Cancelar
+Renomear
+Digite um novo nome ou modelo.<s><s>Variáveis
+Eliminar
+O ficheiro não existe!
+Eliminar ficheiro?
+Deseja mesmo eliminar {0} Ficheiro(s)?
+Redimensionar Colunas Automáticamente
+Formato Texturas
+Tamanho
+Pastas
+Remover Esta Pasta
+Irá se criada uma pasta separada para cada ficheiro
+Extrair
+Alterar ID do Título
+Digite o novo ID do Título
+O ID do Título só poderá conter letras e números!
+O Tamanho do ID do Título tem que ser igual a 4 caracteres!
+Abrir Pasta
+Copiar
+Cortar
+Colar
+O ficheiro destino já existe. Deseja substituí-lo ?
+Fechar && Guardar
+Substituir?
+O ficheiro (common-)key.bin deverá existir na pasta do aplicativo!
+Common-Key não encontrado
+Guardar Wad
+Para a Pasta
+Seleccione a pasta com o Backup da NAND
+Necessita definir a pasta onde se encontra o Backup da NAND (Opções)!
+Backup da NAND não encontrado
+Guardar
+Para a NAND
+Alterar a pasta com o Backup da NAND
+A edição de funcionalidades está limitada aos Canais (Channel Titles)!
+Ficheiros Slang
+O ficheiro slang não é válido!
+Informação
+Ocorrerram {0} Erros
+Ficheiro U8 descompactado com sucesso
+Tem a certeza?
+Não existem Wads nesta pasta para mudar para Region Free! 
+Ficheiro de Imagem convertido para Tpl com sucesso
+Exportar Para Ficheiro
+Mostrar Pasta nos Nomes de Grupo
+Alterar o Título do Canal
+Choose the folder including the contents to pack
+Titulo do Canal não encontrado!
+Abertos Recentemente
+Do Ficheiro
+Ferramentas
+Ver
+Criar Wad
+Criar Wad (sem Trailer)
+Faltam ficheiros!
+Fila de espera
+Instalar
+Descartar
+Títulos instalados
+Versão
+Tipo
+Título do Canal
+Ficheiro
+Pasta
+Todos os ficheiros wad da pasta seleccionada serão instalados
+Adicionar Subpastas
+Seleccione a pasta para compactar para um Ficheiro U8
+A pré-visualização só funciona com Canais!
+Ficheiro U8 inválido!
+Só são suportados ficheiros TPL contendo 1 Textura!
+A textura está num formato não suportado!
+Pré-visualizar
+Descompactar Ficheiro U8
+Converter Tpl para Imagem
+Fechar
+Guardar Tudo
+Imagens de Banner
+Imagens de Icone
+Ambos
+Os canais escondidos não têm Banners ou Icones!
+Digite '{0}' para criar '{1}'
+Deveria ter digitado '{0}'!
+Criar Common-Key
+'{0}' já existe!
+Não existem novas versões.
+Versão {0} disponível.<s>Endereço para download: {1}<s>Deseja descarregá-la agora?
+Verificar Actualizações
+O Backup foi restaurado
+Não foi criado Backup para este ficheiro!
+Criar Backups Antes de Editar
+Restaurar Backup
+Comprimir o Ficheiro U8 resultante com compressão Lz77?<s>Ficheiros 00000000.app não devem ser comprimidos!
+Pergunta
+Download completo!
+Mostrar Ecrã de Arranque
+Escolha os Títulos dos Canais
+Ficheiro U8 compactado com sucesso
+Este ficheiro 00000000.app não é válido<s>O ficheiro foi guardado sem cabeçalho!
+Ficheiro comprimido com sucesso
+Ficheiro descomprimido com sucesso
+O novo ficheiro Dol foi inserido com sucesso
+Inserir Dol
+Alterar Slot IOS
+Alterar Versão do Título
+Com Cabeçalho IMD5
+Com Cabeçalho IMET
+Sem Cabeçalho
+Comprimir Lz77
+Descomprimir Lz77
+Com formato RGB565 (Qualidade Intermédia)
+Com formato RGB5A3 (Baixa Qualidade)
+Com formato RGBA8 (Alta Qualidade)
+Remover Todas as Pastas
+Actualizar Esta Pasta
+Backup
+Restaurar
+Fazer Backup a Tudo
+Restaurar Tudo
+Dados Guardados
+Converter Imagem Para Tpl
+Compactar Ficheiro U8
+Digite a Versão do Título
+Digite a nova Versão para o Título.<s>O valor máximo é 65535.
+Deve digitar um valor válido para a Versão do Título
+Digite o Slot IOS
+Digite um novo Slot IOS
+Deve digitar um valor válido para o Slot IOS
+ocorreram {0} erro(s)!
+Substituir
+Portable Mode
+Extract BootMii Dump
