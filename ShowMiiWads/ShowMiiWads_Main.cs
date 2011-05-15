@@ -30,6 +30,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using ChannelNameBox;
 using InputBoxes;
+using libWiiSharp;
 
 namespace ShowMiiWads
 {
@@ -4749,10 +4750,9 @@ namespace ShowMiiWads
             }
         }
 
-
         private void btnCreateNANDFromScratch_Click(object sender, EventArgs e)
         {
-            this.pbProgress.Tag = "NoProgress";
+            this.NoProgress();
 
             using (ShowMiiWads_BuildNandFromScratch buildNandFromScratchForm = new ShowMiiWads_BuildNandFromScratch())
             {
@@ -4867,5 +4867,6 @@ namespace ShowMiiWads
                     ErrorBox("No patterns to patch were found...");
             }
         }
+
     }
 }

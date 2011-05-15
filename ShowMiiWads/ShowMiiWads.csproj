@@ -152,6 +152,7 @@
     <Compile Include="ShowMiiWads_Main.Designer.cs">
       <DependentUpon>ShowMiiWads_Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="WiimmsIsoTools.cs" />
     <Compile Include="Wii_NandExtract.cs" />
     <Compile Include="ShowMiiWads_Preview.cs">
       <SubType>Form</SubType>
@@ -187,6 +188,11 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
+    <None Include="External\wit\load-titles.bat" />
+    <None Include="External\wit\load-titles.sh" />
+    <None Include="External\wit\windows-install.bat" />
+    <None Include="External\wit\windows-install.sh" />
+    <None Include="External\wit\wit-console.bat" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -228,6 +234,46 @@
     <EmbeddedResource Include="ShowMiiWads_Preview.resx">
       <DependentUpon>ShowMiiWads_Preview.cs</DependentUpon>
     </EmbeddedResource>
+    <Content Include="External\wit\bash.exe" />
+    <Content Include="External\wit\comm.exe" />
+    <Content Include="External\wit\cp.exe" />
+    <Content Include="External\wit\cygattr-1.dll" />
+    <Content Include="External\wit\cygcrypto-0.9.8.dll" />
+    <Content Include="External\wit\cyggcc_s-1.dll" />
+    <Content Include="External\wit\cygiconv-2.dll" />
+    <Content Include="External\wit\cygidn-11.dll" />
+    <Content Include="External\wit\cygintl-8.dll" />
+    <Content Include="External\wit\cygncursesw-10.dll" />
+    <Content Include="External\wit\cygpopt-0.dll" />
+    <Content Include="External\wit\cygreadline7.dll" />
+    <Content Include="External\wit\cygssl-0.9.8.dll" />
+    <Content Include="External\wit\cygwin1.dll" />
+    <Content Include="External\wit\cygz.dll" />
+    <Content Include="External\wit\mkdir.exe" />
+    <Content Include="External\wit\realpath.exe" />
+    <Content Include="External\wit\regtool.exe" />
+    <Content Include="External\wit\sed.exe" />
+    <Content Include="External\wit\stat.exe" />
+    <Content Include="External\wit\system-menu.txt" />
+    <Content Include="External\wit\titles-de.txt" />
+    <Content Include="External\wit\titles-es.txt" />
+    <Content Include="External\wit\titles-fr.txt" />
+    <Content Include="External\wit\titles-it.txt" />
+    <Content Include="External\wit\titles-ja.txt" />
+    <Content Include="External\wit\titles-ko.txt" />
+    <Content Include="External\wit\titles-nl.txt" />
+    <Content Include="External\wit\titles-pt.txt" />
+    <Content Include="External\wit\titles-ru.txt" />
+    <Content Include="External\wit\titles-zhcn.txt" />
+    <Content Include="External\wit\titles-zhtw.txt" />
+    <Content Include="External\wit\titles.txt" />
+    <Content Include="External\wit\tr.exe" />
+    <Content Include="External\wit\wdf-cat.exe" />
+    <Content Include="External\wit\wdf-dump.exe" />
+    <Content Include="External\wit\wdf.exe" />
+    <Content Include="External\wit\wget.exe" />
+    <Content Include="External\wit\wit.exe" />
+    <Content Include="External\wit\wwt.exe" />
     <Content Include="FAQ.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -300,7 +346,9 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetDir)Languages\english.txt" "$(TargetDir)example.slang"
-del /F /S /Q languages</PostBuildEvent>
+del /F /S /Q languages
+mkdir "$(TargetDir)External\wit"
+copy "$(ProjectDir)External\wit\*" "$(TargetDir)External\wit\*"</PostBuildEvent>
     <PreBuildEvent>del example.slang</PreBuildEvent>
   </PropertyGroup>
 </Project>
