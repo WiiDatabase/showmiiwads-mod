@@ -31,6 +31,8 @@ using System.Windows.Forms;
 using ChannelNameBox;
 using InputBoxes;
 using libWiiSharp;
+using Wii;
+using System.Collections.Generic;
 
 namespace ShowMiiWads
 {
@@ -59,6 +61,7 @@ namespace ShowMiiWads
         private string[] copyfile = new string[1];
         private string copyaction = "";
         private string NandPath = "";
+        private string WiiGamePath = "";
         private string showpath = "true";
         private string addsub = "false";
         private string backup = "false";
@@ -69,6 +72,7 @@ namespace ShowMiiWads
         public static string TempPath = Path.GetTempPath() + "\\ShowMiiWads_WadTemp";
         public string ListPath = Path.GetTempPath() + "\\ShowMiiWads.list";
         public string ListPathNand = Path.GetTempPath() + "\\ShowMiiNand.list";
+        public string ListPathWiiGames = Path.GetTempPath() + "\\ShowMiiWiiGames.list";
         private string CfgPath = Application.StartupPath + "\\ShowMiiWads.cfg";
         private string SaveBackupPath = Application.StartupPath + "\\SaveDataBackups";
         private bool portable = false;
@@ -103,12 +107,12 @@ namespace ShowMiiWads
             if (Directory.Exists(TempPath)) Directory.Delete(TempPath, true);
             //Define EventHandler for Wad Processes
             Wii.Tools.ProgressChanged += new EventHandler<Wii.ProgressChangedEventArgs>(WadProgressChanged);
-#if !Debug
+            //#if !Debug
             //Check for Updates
             //Disable in mod version !!!
             //MethodInvoker Update = new MethodInvoker(UpdateCheck);
             //Update.BeginInvoke(null, null);
-#endif
+            //#endif
             //Cursor back to default
             Cursor.Current = Cursors.Default;
         }
@@ -609,6 +613,35 @@ namespace ShowMiiWads
         }
 
         /// <summary>
+        /// Writes the entries of lvWiiGame to an Xml-File
+        /// </summary>
+        private void SaveListWiiGames()
+        {
+            DataSet dswiigames = new DataSet("ShowMiiWiiGames");
+            DataTable dtwiigames = new DataTable(WiiGamePath);
+
+            for (int z = 0; z < lvWiiGames.Columns.Count; z++)
+            {
+                dtwiigames.Columns.Add(lvWiiGames.Columns[z].Text);
+            }
+
+            for (int a = 0; a < lvWiiGames.Items.Count; a++)
+            {
+                dtwiigames.Rows.Add(new object[] { lvWiiGames.Items[a].Text,
+                        lvWiiGames.Items[a].SubItems[1].Text,
+                        lvWiiGames.Items[a].SubItems[2].Text,
+                        lvWiiGames.Items[a].SubItems[3].Text,
+                        lvWiiGames.Items[a].SubItems[4].Text,
+                        lvWiiGames.Items[a].SubItems[5].Text,
+                        lvWiiGames.Items[a].SubItems[6].Text,
+                        lvWiiGames.Items[a].SubItems[7].Text });
+            }
+
+            dswiigames.Tables.Add(dtwiigames);
+            dswiigames.WriteXml(ListPathWiiGames);
+        }
+
+        /// <summary>
         /// Adds all entry from the Xml to lvWads
         /// </summary>
         private void LoadList()
@@ -688,6 +721,54 @@ namespace ShowMiiWads
         }
 
         /// <summary>
+        /// Adds all entry from the Xml to lvWiiGames
+        /// </summary>
+        private void LoadListWiiGames()
+        {
+            DataSet ds = new DataSet();
+            ds.ReadXmlSchema(ListPathWiiGames);
+            ds.ReadXml(ListPathWiiGames);
+
+            lvWiiGames.Items.Clear();
+
+            try
+            {
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    if ((ds.Tables[0].Rows[i][6].ToString() == GameType.fst.ToString() &&
+                        Directory.Exists(ds.Tables[0].Rows[i][7].ToString()))
+                        ||
+                        (ds.Tables[0].Rows[i][6].ToString() != GameType.fst.ToString() &&
+                        File.Exists(ds.Tables[0].Rows[i][7].ToString())))
+                    {
+                        lvWiiGames.Items.Add(new ListViewItem(new string[] { 
+                        ds.Tables[0].Rows[i][0].ToString(),
+                        ds.Tables[0].Rows[i][1].ToString(),
+                        ds.Tables[0].Rows[i][2].ToString(),
+                        ds.Tables[0].Rows[i][3].ToString(),
+                        ds.Tables[0].Rows[i][4].ToString(),
+                        ds.Tables[0].Rows[i][5].ToString(),
+                        ds.Tables[0].Rows[i][6].ToString(),
+                        ds.Tables[0].Rows[i][7].ToString() }));
+                    }
+                }
+
+                foreach (ListViewItem item in lvWiiGames.Items)
+                {
+                    if (item.SubItems[6].Text != GameType.fst.ToString())
+                    {
+                        item.BackColor = Color.LightPink;
+                    }
+                    else
+                    {
+                        item.BackColor = Color.LightGreen;
+                    }
+                }
+            }
+            catch { }
+        }
+
+        /// <summary>
         /// Saves all settings to ShowMiiWads.cfg
         /// </summary>
         private void SaveSettings()
@@ -701,6 +782,7 @@ namespace ShowMiiWads
             settings.Columns.Add("LangFile");
             settings.Columns.Add("AutoSize");
             settings.Columns.Add("NandPath");
+            settings.Columns.Add("WiiGamePath");
             settings.Columns.Add("ShowPath");
             settings.Columns.Add("AddSub");
             settings.Columns.Add("Portable");
@@ -737,6 +819,7 @@ namespace ShowMiiWads
             settingsrow["Version"] = version;
             settingsrow["AddSub"] = addsub;
             settingsrow["NandPath"] = NandPath;
+            settingsrow["WiiGamePath"] = WiiGamePath;
             settingsrow["Language"] = language;
             settingsrow["LangFile"] = langfile;
             settingsrow["AutoSize"] = autosize;
@@ -746,7 +829,18 @@ namespace ShowMiiWads
             settingsrow["SplashScreen"] = splash;
             settingsrow["Accepted"] = accepted;
             settingsrow["SaveFolders"] = savefolders;
-            settingsrow["View"] = (lvNand.Visible) ? "ShowMiiNand" : "ShowMiiWads"; 
+            if (lvNand.Visible)
+            {
+                settingsrow["View"] = "ShowMiiNand";
+            }
+            else if (lvWads.Visible)
+            {
+                settingsrow["View"] = "ShowMiiWads";
+            }
+            else
+            {
+                settingsrow["View"] = "ShowMiiWiiGames";
+            }
             windowrow["WindowWidth"] = wwidth;
             windowrow["WindowHeight"] = wheight;
             windowrow["LocationX"] = locx;
@@ -809,8 +903,9 @@ namespace ShowMiiWads
                         backup = ds.Tables["Settings"].Rows[0]["CreateBackups"].ToString();
                         splash = ds.Tables["Settings"].Rows[0]["SplashScreen"].ToString();
                         NandPath = ds.Tables["Settings"].Rows[0]["NandPath"].ToString();
+                        WiiGamePath = ds.Tables["Settings"].Rows[0]["WiiGamePath"].ToString();
                         showpath = ds.Tables["Settings"].Rows[0]["ShowPath"].ToString();
-                        bool showMiiNand = ds.Tables["Settings"].Rows[0]["View"].ToString() == "ShowMiiNand";
+                        string currentView = ds.Tables["Settings"].Rows[0]["View"].ToString();
                         wwidth = ds.Tables["Window"].Rows[0]["WindowWidth"].ToString();
                         wheight = ds.Tables["Window"].Rows[0]["WindowHeight"].ToString();
                         locx = ds.Tables["Window"].Rows[0]["LocationX"].ToString();
@@ -833,10 +928,20 @@ namespace ShowMiiWads
                         LoadLanguage();
                         SetWindowProperties(wwidth, wheight, locx, locy, wstate);
 
-                        if (showMiiNand)
+                        if ("ShowMiiNand".Equals(currentView))
                         {
                             btnShowMiiNand.Checked = true;
                             btnShowMiiNand_Click(null, null);
+                        }
+                        else if ("ShowMiiWiiGames".Equals(currentView))
+                        {
+                            btnShowMiiWiiGames.Checked = true;
+                            btnShowMiiWiiGames_Click(null, null);
+                        }
+                        else
+                        {
+                            btnShowMiiWads.Checked = true;
+                            btnShowMiiWads_Click(null, null);
                         }
 
                         switch (autosize)
@@ -956,6 +1061,9 @@ namespace ShowMiiWads
             else
             {
                 LoadLanguage();
+
+                btnShowMiiWads.Checked = true;
+                btnShowMiiWads_Click(null, null);
 
                 SetWindowProperties(wwidth, wheight, "", "", "Normal");
 
@@ -1370,57 +1478,57 @@ namespace ShowMiiWads
         /// <returns></returns>
         private bool ChangeTitleID(string wadfile, string oldid)
         {
-//            if (File.Exists(ckey) || File.Exists(key))
-//            {
-                InputBoxDialog ib = new InputBoxDialog();
-                ib.FormCaption = Messages[41];
-                ib.FormPrompt = Messages[42];
-                ib.DefaultValue = oldid;
-                ib.btnCancel.Text = Messages[27];
-                ib.MaxLength = 4;
-                ib.CaseBox = true;
+            //            if (File.Exists(ckey) || File.Exists(key))
+            //            {
+            InputBoxDialog ib = new InputBoxDialog();
+            ib.FormCaption = Messages[41];
+            ib.FormPrompt = Messages[42];
+            ib.DefaultValue = oldid;
+            ib.btnCancel.Text = Messages[27];
+            ib.MaxLength = 4;
+            ib.CaseBox = true;
 
-                if (ib.ShowDialog() == DialogResult.OK)
+            if (ib.ShowDialog() == DialogResult.OK)
+            {
+                string newid = ib.InputResponse;
+                if (newid.Length == 4)
                 {
-                    string newid = ib.InputResponse;
-                    if (newid.Length == 4)
+                    if (newid != oldid)
                     {
-                        if (newid != oldid)
+                        Regex reg = new Regex("^[0-9A-Za-z]*$");
+
+                        if (reg.IsMatch(newid))
                         {
-                            Regex reg = new Regex("^[0-9A-Za-z]*$");
+                            Cursor.Current = Cursors.WaitCursor;
+                            CreateBackup(wadfile);
 
-                            if (reg.IsMatch(newid))
-                            {
-                                Cursor.Current = Cursors.WaitCursor;
-                                CreateBackup(wadfile);
+                            try { Wii.WadEdit.ChangeTitleID(wadfile, newid); }
+                            catch (Exception ex) { InfoBox(ex.Message, Messages[53]); }
 
-                                try { Wii.WadEdit.ChangeTitleID(wadfile, newid); }
-                                catch (Exception ex) { InfoBox(ex.Message, Messages[53]); }
-
-                                Cursor.Current = Cursors.Default;
-                                return true;
-                            }
-                            else
-                            {
-                                ErrorBox(Messages[43]);
-                                return false;
-                            }
+                            Cursor.Current = Cursors.Default;
+                            return true;
                         }
                         else
                         {
+                            ErrorBox(Messages[43]);
                             return false;
                         }
                     }
                     else
                     {
-                        ErrorBox(Messages[44]);
                         return false;
                     }
                 }
                 else
                 {
+                    ErrorBox(Messages[44]);
                     return false;
                 }
+            }
+            else
+            {
+                return false;
+            }
             //}
             //else
             //{
@@ -1880,6 +1988,11 @@ namespace ShowMiiWads
                 AddNand();
                 SaveListNand();
             }
+            else
+            {
+                listWiiGame();
+                SaveListWiiGames();
+            }
         }
 
         private void btnAbout_Click(object sender, EventArgs e)
@@ -2133,7 +2246,7 @@ namespace ShowMiiWads
 
                             if (Directory.Exists(NandPath + "\\title\\" + item.SubItems[7].Text + "\\content\\"))
                                 Directory.Delete(NandPath + "\\title\\" + item.SubItems[7].Text + "\\content\\", true);
-                            
+
                             continue;
                         }
                     }
@@ -2200,6 +2313,22 @@ namespace ShowMiiWads
                     lvNand.Columns[8].Width -
                     lvNand.Columns[9].Width -
                     lvNand.Columns[10].Width);
+
+                lvWiiGames.Columns[0].Width = Convert.ToInt32(lvWiiGames.Width * ((double)60 / 914)); //ID
+                lvWiiGames.Columns[1].Width = Convert.ToInt32(lvWiiGames.Width * ((double)190 / 914)); //Title
+                lvWiiGames.Columns[2].Width = Convert.ToInt32(lvWiiGames.Width * ((double)190 / 914)); //Custom Title
+                lvWiiGames.Columns[3].Width = Convert.ToInt32(lvWiiGames.Width * ((double)80 / 914)); //IOS Required
+                lvWiiGames.Columns[4].Width = Convert.ToInt32(lvWiiGames.Width * ((double)50 / 914)); //Region
+                lvWiiGames.Columns[5].Width = Convert.ToInt32(lvWiiGames.Width * ((double)75 / 914)); //Size
+                lvWiiGames.Columns[6].Width = Convert.ToInt32(lvWiiGames.Width * ((double)40 / 914)); //Type
+                lvWiiGames.Columns[7].Width = Convert.ToInt32(lvWiiGames.Width -                //Game Path
+                    lvWiiGames.Columns[0].Width -
+                    lvWiiGames.Columns[1].Width -
+                    lvWiiGames.Columns[2].Width -
+                    lvWiiGames.Columns[3].Width -
+                    lvWiiGames.Columns[4].Width -
+                    lvWiiGames.Columns[5].Width -
+                    lvWiiGames.Columns[6].Width);
             }
             else
             {
@@ -2335,7 +2464,7 @@ namespace ShowMiiWads
         }
 
         private void btnOpen_Click(object sender, EventArgs e)
-        {           
+        {
             FolderBrowserDialog path = new FolderBrowserDialog();
             path.Description = Messages[20];
             path.SelectedPath = lastPath;
@@ -2491,7 +2620,6 @@ namespace ShowMiiWads
             pbProgress.Value = 100;
             pbProgress.Tag = "";
         }
-
 
         private void cmPal_Click(object sender, EventArgs e)
         {
@@ -2817,29 +2945,29 @@ namespace ShowMiiWads
         {
             if (lvWads.SelectedItems.Count > 0)
             {
-//                if (File.Exists(ckey) || File.Exists(key))
-//                {
-                    if (NandPath != "")
+                //                if (File.Exists(ckey) || File.Exists(key))
+                //                {
+                if (NandPath != "")
+                {
+                    pbProgress.Tag = "NoProgress";
+                    pbProgress.Value = 0;
+                    Cursor.Current = Cursors.WaitCursor;
+                    int selected = lvWads.SelectedItems.Count;
+
+                    for (int i = 0; i < lvWads.SelectedItems.Count; i++)
                     {
-                        pbProgress.Tag = "NoProgress";
-                        pbProgress.Value = 0;
-                        Cursor.Current = Cursors.WaitCursor;
-                        int selected = lvWads.SelectedItems.Count;
+                        pbProgress.Value = ((i + 1) * 100) / selected;
 
-                        for (int i = 0; i < lvWads.SelectedItems.Count; i++)
-                        {
-                            pbProgress.Value = ((i + 1) * 100) / selected;
+                        string wadfile = lvWads.SelectedItems[i].Group.Tag.ToString() + "\\" + lvWads.SelectedItems[i].Text;
 
-                            string wadfile = lvWads.SelectedItems[i].Group.Tag.ToString() + "\\" + lvWads.SelectedItems[i].Text;
-
-                            try { Wii.WadUnpack.UnpackToNand(wadfile, NandPath); }
-                            catch (Exception ex) { ErrorBox(ex.Message); }
-                        }
+                        try { Wii.WadUnpack.UnpackToNand(wadfile, NandPath); }
+                        catch (Exception ex) { ErrorBox(ex.Message); }
                     }
-                    else
-                    {
-                        InfoBox(Messages[57], Messages[58]);
-                    }
+                }
+                else
+                {
+                    InfoBox(Messages[57], Messages[58]);
+                }
                 //}
                 //else
                 //{
@@ -2860,17 +2988,17 @@ namespace ShowMiiWads
         /// <param name="path2">Second Part of Path</param>
         private void CopyToNand(string wadfile)
         {
-//            if (File.Exists(ckey) || File.Exists(key))
-//            {
-                if (NandPath != "")
-                {
-                    try { Wii.WadUnpack.UnpackToNand(wadfile, NandPath); }
-                    catch (Exception ex) { ErrorBox(ex.Message); }
-                }
-                else
-                {
-                    InfoBox(Messages[57], Messages[58]);
-                }
+            //            if (File.Exists(ckey) || File.Exists(key))
+            //            {
+            if (NandPath != "")
+            {
+                try { Wii.WadUnpack.UnpackToNand(wadfile, NandPath); }
+                catch (Exception ex) { ErrorBox(ex.Message); }
+            }
+            else
+            {
+                InfoBox(Messages[57], Messages[58]);
+            }
             //}
             //else
             //{
@@ -2898,34 +3026,55 @@ namespace ShowMiiWads
             }
         }
 
+        private void btnWiiGamePath_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fb = new FolderBrowserDialog();
+            fb.Description = Messages[56];
+
+            if (!String.IsNullOrEmpty(WiiGamePath))
+            {
+                fb.SelectedPath = WiiGamePath;
+            }
+
+            if (fb.ShowDialog() == DialogResult.OK)
+            {
+                WiiGamePath = fb.SelectedPath;
+                SaveSettings();
+
+                if (lvWiiGames.Visible == true)
+                { btnRefresh_Click(null, null); }
+            }
+
+        }
+
         private void cmToFolder_Click(object sender, EventArgs e)
         {
             if (lvWads.SelectedItems.Count > 0)
             {
-//                if (File.Exists(ckey) || File.Exists(key))
-//                {
-                    FolderBrowserDialog fd = new FolderBrowserDialog();
-                    fd.Description = Messages[39];
-                    fd.SelectedPath = Application.StartupPath;
+                //                if (File.Exists(ckey) || File.Exists(key))
+                //                {
+                FolderBrowserDialog fd = new FolderBrowserDialog();
+                fd.Description = Messages[39];
+                fd.SelectedPath = Application.StartupPath;
 
-                    if (fd.ShowDialog() == DialogResult.OK)
+                if (fd.ShowDialog() == DialogResult.OK)
+                {
+                    pbProgress.Tag = "NoProgress";
+                    pbProgress.Value = 0;
+                    Cursor.Current = Cursors.WaitCursor;
+                    int selected = lvWads.SelectedItems.Count;
+
+                    for (int i = 0; i < lvWads.SelectedItems.Count; i++)
                     {
-                        pbProgress.Tag = "NoProgress";
-                        pbProgress.Value = 0;
-                        Cursor.Current = Cursors.WaitCursor;
-                        int selected = lvWads.SelectedItems.Count;
+                        pbProgress.Value = ((i + 1) * 100) / selected;
 
-                        for (int i = 0; i < lvWads.SelectedItems.Count; i++)
-                        {
-                            pbProgress.Value = ((i + 1) * 100) / selected;
+                        string wadfile = lvWads.SelectedItems[i].Group.Tag + "\\" + lvWads.SelectedItems[i].Text;
+                        string wadname = lvWads.SelectedItems[i].Text.Remove(lvWads.SelectedItems[i].Text.Length - 4);
 
-                            string wadfile = lvWads.SelectedItems[i].Group.Tag + "\\" + lvWads.SelectedItems[i].Text;
-                            string wadname = lvWads.SelectedItems[i].Text.Remove(lvWads.SelectedItems[i].Text.Length - 4);
-
-                            try { Wii.WadUnpack.UnpackWad(wadfile, fd.SelectedPath + "\\" + wadname); }
-                            catch (Exception ex) { ErrorBox(ex.Message); }
-                        }
+                        try { Wii.WadUnpack.UnpackWad(wadfile, fd.SelectedPath + "\\" + wadname); }
+                        catch (Exception ex) { ErrorBox(ex.Message); }
                     }
+                }
                 //}
                 //else
                 //{
@@ -3047,51 +3196,51 @@ namespace ShowMiiWads
             {
                 if (!lvWads.SelectedItems[0].SubItems[8].Text.Contains("System:") || !lvWads.SelectedItems[0].SubItems[8].Text.Contains("Hidden"))
                 {
-//                    if (File.Exists(ckey) || File.Exists(key))
-//                    {
-                        string wadfile = lvWads.SelectedItems[0].Group.Tag.ToString() + "\\" + lvWads.SelectedItems[0].Text;
-                        string[] oldtitles = Wii.WadInfo.GetChannelTitles(lvWads.SelectedItems[0].Group.Tag.ToString() + "\\" + lvWads.SelectedItems[0].Text);
+                    //                    if (File.Exists(ckey) || File.Exists(key))
+                    //                    {
+                    string wadfile = lvWads.SelectedItems[0].Group.Tag.ToString() + "\\" + lvWads.SelectedItems[0].Text;
+                    string[] oldtitles = Wii.WadInfo.GetChannelTitles(lvWads.SelectedItems[0].Group.Tag.ToString() + "\\" + lvWads.SelectedItems[0].Text);
 
-                        if (oldtitles[1].Length != 0)
+                    if (oldtitles[1].Length != 0)
+                    {
+                        string[] oldvalues = new string[] { oldtitles[0], oldtitles[1], oldtitles[2], oldtitles[3], oldtitles[4], oldtitles[5], oldtitles[6], oldtitles[7] };
+                        ChannelNameDialog cld = new ChannelNameDialog();
+                        cld.FormCaption = Messages[73];
+                        cld.btnCancelText = Messages[27];
+                        cld.Titles = oldtitles;
+                        cld.ShowDialog();
+
+                        if (cld.DialogResult == DialogResult.OK)
                         {
-                            string[] oldvalues = new string[] { oldtitles[0], oldtitles[1], oldtitles[2], oldtitles[3], oldtitles[4], oldtitles[5], oldtitles[6], oldtitles[7] };
-                            ChannelNameDialog cld = new ChannelNameDialog();
-                            cld.FormCaption = Messages[73];
-                            cld.btnCancelText = Messages[27];
-                            cld.Titles = oldtitles;
-                            cld.ShowDialog();
+                            string[] newtitles = cld.Titles;
+                            bool[] samesame = new bool[] { true, true, true, true, true, true, true, true };
 
-                            if (cld.DialogResult == DialogResult.OK)
+                            for (int z = 0; z < 8; z++)
                             {
-                                string[] newtitles = cld.Titles;
-                                bool[] samesame = new bool[] { true, true, true, true, true, true, true, true };
-
-                                for (int z = 0; z < 8; z++)
+                                if (oldvalues[z] != newtitles[z])
                                 {
-                                    if (oldvalues[z] != newtitles[z])
-                                    {
-                                        samesame[z] = false;
-                                    }
-                                }
-
-                                if (samesame[0] != true || samesame[1] != true || samesame[2] != true || samesame[3] != true || samesame[4] != true || samesame[5] != true || samesame[6] != true || samesame[7] != true)
-                                {
-                                    Cursor.Current = Cursors.WaitCursor;
-                                    CreateBackup(wadfile);
-
-                                    Wii.WadEdit.ChangeChannelTitle(wadfile, newtitles);
-                                    lvWads.SelectedItems[0].Remove();
-                                    SaveList();
-                                    LoadNew();
-
-                                    Cursor.Current = Cursors.Default;
+                                    samesame[z] = false;
                                 }
                             }
+
+                            if (samesame[0] != true || samesame[1] != true || samesame[2] != true || samesame[3] != true || samesame[4] != true || samesame[5] != true || samesame[6] != true || samesame[7] != true)
+                            {
+                                Cursor.Current = Cursors.WaitCursor;
+                                CreateBackup(wadfile);
+
+                                Wii.WadEdit.ChangeChannelTitle(wadfile, newtitles);
+                                lvWads.SelectedItems[0].Remove();
+                                SaveList();
+                                LoadNew();
+
+                                Cursor.Current = Cursors.Default;
+                            }
                         }
-                        else
-                        {
-                            ErrorBox(Messages[75]);
-                        }
+                    }
+                    else
+                    {
+                        ErrorBox(Messages[75]);
+                    }
                     //}
                     //else
                     //{
@@ -3206,8 +3355,7 @@ namespace ShowMiiWads
             if (btnShowMiiWads.Checked == true)
             {
                 btnShowMiiNand.Checked = false;
-                if (File.Exists(ListPath))
-                    LoadNewWads();
+                btnShowMiiWiiGames.Checked = false;
 
                 lbFiles.Text = Messages[16] + ":";
                 lbFolders.Text = Messages[37] + ":";
@@ -3225,11 +3373,18 @@ namespace ShowMiiWads
 
                 lvWads.Visible = true;
                 lvNand.Visible = false;
+                lvWiiGames.Visible = false;
 
-                if (!File.Exists(ListPath))
+                if (File.Exists(ListPath))
+                {
+                    LoadNewWads();
+                }
+                else
+                {
                     btnRefresh_Click(null, null);
+                }
             }
-            else { btnShowMiiWads.Checked = true; }
+            //else { btnShowMiiWads.Checked = true; }
         }
 
         private void btnShowMiiNand_Click(object sender, EventArgs e)
@@ -3239,6 +3394,7 @@ namespace ShowMiiWads
                 if (NandPath != "")
                 {
                     btnShowMiiWads.Checked = false;
+                    btnShowMiiWiiGames.Checked = false;
                     if (File.Exists(ListPathNand))
                         LoadNewNand();
 
@@ -3251,6 +3407,7 @@ namespace ShowMiiWads
 
                     lvWads.Visible = false;
                     lvNand.Visible = true;
+                    lvWiiGames.Visible = false;
 
                     if (!File.Exists(ListPathNand))
                         btnRefresh_Click(null, null);
@@ -3261,7 +3418,42 @@ namespace ShowMiiWads
                     InfoBox(Messages[57], Messages[58]);
                 }
             }
-            else { btnShowMiiNand.Checked = true; }
+            //else { btnShowMiiNand.Checked = true; }
+        }
+
+        private void btnShowMiiWiiGames_Click(object sender, EventArgs e)
+        {
+            if (btnShowMiiWiiGames.Checked == true)
+            {
+                if (!String.IsNullOrEmpty(WiiGamePath))
+                {
+                    btnShowMiiWads.Checked = false;
+                    btnShowMiiNand.Checked = false;
+                    if (File.Exists(ListPathWiiGames))
+                        LoadListWiiGames();
+
+                    lbFiles.Text = Messages[86] + ":";
+                    lbFolders.Text = "";
+                    lbFolderCount.Text = "";
+                    lbFileCount.Text = lvWiiGames.Items.Count.ToString();
+
+                    this.Text = "ShowMiiWiiGames " + version + " by orwel";
+
+                    lvWads.Visible = false;
+                    lvNand.Visible = false;
+                    lvWiiGames.Visible = true;
+
+                    if (!File.Exists(ListPathWiiGames))
+                        btnRefresh_Click(null, null);
+                }
+                else
+                {
+                    btnShowMiiWiiGames.Checked = false;
+                    InfoBox("Please set Wii Game Directory", Messages[58]);
+                }
+            }
+            //else { btnShowMiiNand.Checked = true; }
+
         }
 
         private void lvNand_Resize(object sender, EventArgs e)
@@ -4868,5 +5060,88 @@ namespace ShowMiiWads
             }
         }
 
+        private void lvWiiGames_Resize(object sender, System.EventArgs e)
+        {
+            if (autosize == "true")
+            {
+                lvWiiGames.Columns[0].Width = Convert.ToInt32(lvWiiGames.Width * ((double)60 / 914)); //ID
+                lvWiiGames.Columns[1].Width = Convert.ToInt32(lvWiiGames.Width * ((double)190 / 914)); //Title
+                lvWiiGames.Columns[2].Width = Convert.ToInt32(lvWiiGames.Width * ((double)190 / 914)); //Custom Title
+                lvWiiGames.Columns[3].Width = Convert.ToInt32(lvWiiGames.Width * ((double)80 / 914)); //IOS Required
+                lvWiiGames.Columns[4].Width = Convert.ToInt32(lvWiiGames.Width * ((double)50 / 914)); //Region
+                lvWiiGames.Columns[5].Width = Convert.ToInt32(lvWiiGames.Width * ((double)75 / 914)); //Size
+                lvWiiGames.Columns[6].Width = Convert.ToInt32(lvWiiGames.Width * ((double)40 / 914)); //Type
+                lvWiiGames.Columns[7].Width = Convert.ToInt32(lvWiiGames.Width -                //Game Path
+                    lvWiiGames.Columns[0].Width -
+                    lvWiiGames.Columns[1].Width -
+                    lvWiiGames.Columns[2].Width -
+                    lvWiiGames.Columns[3].Width -
+                    lvWiiGames.Columns[4].Width -
+                    lvWiiGames.Columns[5].Width -
+                    lvWiiGames.Columns[6].Width);
+            }
+        }
+
+        private void listWiiGame()
+        {
+            lvWiiGames.Items.Clear();
+
+            if (Directory.Exists(WiiGamePath))
+            {
+                WiimmsIsoTools wit = new WiimmsIsoTools();
+
+                List<WiiGame> gameList;
+
+                Cursor.Current = Cursors.WaitCursor;
+
+                switch (language)
+                {
+                    case "Dutch":
+                        gameList = wit.ListGames(WiiGamePath, "nl");
+                        break;
+                    case "Italian":
+                        gameList = wit.ListGames(WiiGamePath, "it");
+                        break;
+                    case "Spanish":
+                        gameList = wit.ListGames(WiiGamePath, "es");
+                        break;
+                    case "French":
+                        gameList = wit.ListGames(WiiGamePath, "fr");
+                        break;
+                    case "German":
+                        gameList = wit.ListGames(WiiGamePath, "de");
+                        break;
+                    case "Japanese":
+                        gameList = wit.ListGames(WiiGamePath, "ja");
+                        break;
+                    default:
+                        gameList = wit.ListGames(WiiGamePath, null);
+                        break;
+                }
+
+
+                foreach (WiiGame game in gameList)
+                {
+                    lvWiiGames.Items.Add(new ListViewItem(new string[] { game.id, game.title, game.customTitle, "IOS " + game.iosRequired.ToString(), game.region, game.size.ToString(), game.gameType.ToString(), game.gamePath }));
+                }
+            }
+
+            foreach (ListViewItem item in lvWiiGames.Items)
+            {
+                if (item.SubItems[6].Text != GameType.fst.ToString())
+                {
+                    item.BackColor = Color.LightPink;
+                }
+                else
+                {
+                    item.BackColor = Color.LightGreen;
+                }
+            }
+
+            lbFileCount.Text = lvWiiGames.Items.Count.ToString();
+            Cursor.Current = Cursors.Default;
+        }
+
+    
     }
 }

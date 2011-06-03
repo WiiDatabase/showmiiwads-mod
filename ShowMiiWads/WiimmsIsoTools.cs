@@ -19,7 +19,7 @@ namespace Wii
         public string customTitle { get; set; }
         public int iosRequired { get; set; }
         public string region { get; set; }
-        public int size { get; set; }
+        public long size { get; set; }
         public GameType gameType { get; set; }
         public string gamePath { get; set; }
     }
@@ -119,7 +119,7 @@ namespace Wii
         }
 
         #endregion
-        
+
         #region public methods
 
         public int GetRequiredIOS(string gamePath)
@@ -130,7 +130,7 @@ namespace Wii
             if (!isStopRequired && !String.IsNullOrEmpty(gamePath))
             {
                 processInfo = new ProcessStartInfo(witPath);
-                processInfo.Arguments = @"dump --show P-INFO " + gamePath;
+                processInfo.Arguments = "dump --psel DATA \"" + gamePath + "\"";
 
                 processInfo.UseShellExecute = false;
                 processInfo.CreateNoWindow = true;
@@ -146,7 +146,7 @@ namespace Wii
                 witProcess.WaitForExit();
                 witProcess.Close();
 
-                Regex myRegex = new Regex(@"System version:   [\d]{8}-[\d]{8} = IOS 0x[\d]{2} = IOS ([\d]{2})");
+                Regex myRegex = new Regex(@"System version:    [\d]{8}-[a-fA-F0-9]{8} = IOS 0x[a-fA-F0-9]{2} = IOS ([\d]{1,2})");
 
                 Match m = myRegex.Match(output);
 
@@ -220,11 +220,19 @@ namespace Wii
             if (!isStopRequired && !String.IsNullOrEmpty(gamePath))
             {
                 processInfo = new ProcessStartInfo(witPath);
-                processInfo.Arguments = @"list --real-path --sections --title titles-" + langCode + ".txt " + gamePath;
+                if (!String.IsNullOrEmpty(langCode))
+                {
+                    processInfo.Arguments = @"list --real-path --sections --title titles-" + langCode + ".txt --recurse \"" + gamePath + "\"";
+                }
+                else
+                {
+                    processInfo.Arguments = @"list --real-path --sections --title titles.txt --recurse " + gamePath + "\"";
+                }
 
                 processInfo.UseShellExecute = false;
                 processInfo.CreateNoWindow = true;
                 processInfo.RedirectStandardOutput = true;
+                processInfo.StandardOutputEncoding = System.Text.Encoding.UTF8;
 
                 Process witProcess = new Process();
                 witProcess.StartInfo = processInfo;
@@ -260,7 +268,7 @@ namespace Wii
 
                             try
                             {
-                                game.size = int.Parse(infos[5].Replace("size=", ""));
+                                game.size = long.Parse(infos[5].Replace("size=", ""));
                             }
                             catch
                             {
@@ -277,6 +285,8 @@ namespace Wii
                             }
 
                             game.gamePath = infos[16].Replace("filename=", "");
+
+                            game.gamePath = this.formatPath(game.gamePath);
 
                             game.iosRequired = this.GetRequiredIOS(game.gamePath);
 
@@ -295,6 +305,33 @@ namespace Wii
         {
             isStopRequired = false;
         }
+        #endregion
+
+        #region private methods
+
+        private string formatPath(string path)
+        {
+            string tmp;
+
+            if (path.StartsWith("/cygdrive/"))
+            {
+                tmp = path.Replace("/cygdrive/", "");
+            }
+            else
+            {
+                tmp = path;
+            }
+
+            if (tmp[1] == '/')
+            {
+                tmp = tmp[0] + ":\\" + tmp.Substring(2);
+            }
+
+            tmp = tmp.Replace('/', '\\');
+
+            return tmp;
+        }
+
         #endregion
     }
 }

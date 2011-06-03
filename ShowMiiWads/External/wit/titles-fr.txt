@@ -1,4 +1,4 @@
-010E01 = Wii Backup Disc
+﻿010E01 = Wii Backup Disc
 AMNE01 = Another Super Mario Bros. Wii
 AMOR04 = Guitar Hero III Custom : HARDcore
 ASMB01 = Another Super Mario Bros. Wii

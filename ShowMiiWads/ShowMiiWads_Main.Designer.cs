@@ -122,6 +122,7 @@ namespace ShowMiiWads
             this.btnRestore = new System.Windows.Forms.ToolStripMenuItem();
             this.tsOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.btnNandPath = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnWiiGamePath = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.btnSaveFolders = new System.Windows.Forms.ToolStripMenuItem();
             this.btnShowPath = new System.Windows.Forms.ToolStripMenuItem();
@@ -163,6 +164,7 @@ namespace ShowMiiWads
             this.tsView = new System.Windows.Forms.ToolStripMenuItem();
             this.btnShowMiiWads = new System.Windows.Forms.ToolStripMenuItem();
             this.btnShowMiiNand = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnShowMiiWiiGames = new System.Windows.Forms.ToolStripMenuItem();
             this.tsHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.btnUpdateCheck = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
@@ -206,6 +208,15 @@ namespace ShowMiiWads
             this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             this.cmNandPreview = new System.Windows.Forms.ToolStripMenuItem();
             this.lvQueue = new System.Windows.Forms.ListBox();
+            this.lvWiiGames = new System.Windows.Forms.ListView();
+            this.lvwgId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lvwgTitle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lvwgCustomTitle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lvwgIOSrequired = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lvwgRegion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lvwgSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lvwgType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lvwgPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cmWads.SuspendLayout();
             this.msMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -818,6 +829,7 @@ namespace ShowMiiWads
             // 
             this.tsOptions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnNandPath,
+            this.btnWiiGamePath,
             this.toolStripSeparator5,
             this.btnSaveFolders,
             this.btnShowPath,
@@ -838,6 +850,13 @@ namespace ShowMiiWads
             this.btnNandPath.Size = new System.Drawing.Size(234, 22);
             this.btnNandPath.Text = "Set NAND Backup Path";
             this.btnNandPath.Click += new System.EventHandler(this.btnNandPath_Click);
+            // 
+            // btnWiiGamePath
+            // 
+            this.btnWiiGamePath.Name = "btnWiiGamePath";
+            this.btnWiiGamePath.Size = new System.Drawing.Size(234, 22);
+            this.btnWiiGamePath.Text = "Set Wii Game Backup Path";
+            this.btnWiiGamePath.Click += new System.EventHandler(this.btnWiiGamePath_Click);
             // 
             // toolStripSeparator5
             // 
@@ -1155,7 +1174,8 @@ namespace ShowMiiWads
             // 
             this.tsView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnShowMiiWads,
-            this.btnShowMiiNand});
+            this.btnShowMiiNand,
+            this.btnShowMiiWiiGames});
             this.tsView.Name = "tsView";
             this.tsView.Size = new System.Drawing.Size(44, 20);
             this.tsView.Text = "View";
@@ -1166,7 +1186,7 @@ namespace ShowMiiWads
             this.btnShowMiiWads.CheckOnClick = true;
             this.btnShowMiiWads.CheckState = System.Windows.Forms.CheckState.Checked;
             this.btnShowMiiWads.Name = "btnShowMiiWads";
-            this.btnShowMiiWads.Size = new System.Drawing.Size(152, 22);
+            this.btnShowMiiWads.Size = new System.Drawing.Size(173, 22);
             this.btnShowMiiWads.Text = "ShowMiiWads";
             this.btnShowMiiWads.Click += new System.EventHandler(this.btnShowMiiWads_Click);
             // 
@@ -1174,9 +1194,17 @@ namespace ShowMiiWads
             // 
             this.btnShowMiiNand.CheckOnClick = true;
             this.btnShowMiiNand.Name = "btnShowMiiNand";
-            this.btnShowMiiNand.Size = new System.Drawing.Size(152, 22);
+            this.btnShowMiiNand.Size = new System.Drawing.Size(173, 22);
             this.btnShowMiiNand.Text = "ShowMiiNand";
             this.btnShowMiiNand.Click += new System.EventHandler(this.btnShowMiiNand_Click);
+            // 
+            // btnShowMiiWiiGames
+            // 
+            this.btnShowMiiWiiGames.CheckOnClick = true;
+            this.btnShowMiiWiiGames.Name = "btnShowMiiWiiGames";
+            this.btnShowMiiWiiGames.Size = new System.Drawing.Size(173, 22);
+            this.btnShowMiiWiiGames.Text = "ShowMiiWiiGames";
+            this.btnShowMiiWiiGames.Click += new System.EventHandler(this.btnShowMiiWiiGames_Click);
             // 
             // tsHelp
             // 
@@ -1416,7 +1444,7 @@ namespace ShowMiiWads
             this.toolStripSeparator13,
             this.cmNandPreview});
             this.cmNand.Name = "cmNand";
-            this.cmNand.Size = new System.Drawing.Size(160, 170);
+            this.cmNand.Size = new System.Drawing.Size(160, 148);
             // 
             // cmInstall
             // 
@@ -1528,11 +1556,76 @@ namespace ShowMiiWads
             this.lvQueue.TabIndex = 5;
             this.lvQueue.Visible = false;
             // 
+            // lvWiiGames
+            // 
+            this.lvWiiGames.AllowDrop = true;
+            this.lvWiiGames.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lvwgId,
+            this.lvwgTitle,
+            this.lvwgCustomTitle,
+            this.lvwgIOSrequired,
+            this.lvwgRegion,
+            this.lvwgSize,
+            this.lvwgType,
+            this.lvwgPath});
+            this.lvWiiGames.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvWiiGames.FullRowSelect = true;
+            this.lvWiiGames.Location = new System.Drawing.Point(0, 24);
+            this.lvWiiGames.Name = "lvWiiGames";
+            this.lvWiiGames.Size = new System.Drawing.Size(922, 323);
+            this.lvWiiGames.TabIndex = 6;
+            this.lvWiiGames.UseCompatibleStateImageBehavior = false;
+            this.lvWiiGames.View = System.Windows.Forms.View.Details;
+            this.lvWiiGames.Resize += new System.EventHandler(this.lvWiiGames_Resize);
+            // 
+            // lvwgId
+            // 
+            this.lvwgId.Text = "ID";
+            this.lvwgId.Width = 62;
+            // 
+            // lvwgTitle
+            // 
+            this.lvwgTitle.Text = "Title";
+            this.lvwgTitle.Width = 187;
+            // 
+            // lvwgCustomTitle
+            // 
+            this.lvwgCustomTitle.Text = "Custom Title";
+            this.lvwgCustomTitle.Width = 177;
+            // 
+            // lvwgIOSrequired
+            // 
+            this.lvwgIOSrequired.Text = "IOS Required";
+            this.lvwgIOSrequired.Width = 79;
+            // 
+            // lvwgRegion
+            // 
+            this.lvwgRegion.Tag = "Numeric";
+            this.lvwgRegion.Text = "Region";
+            this.lvwgRegion.Width = 50;
+            // 
+            // lvwgSize
+            // 
+            this.lvwgSize.Tag = "";
+            this.lvwgSize.Text = "Game Size";
+            this.lvwgSize.Width = 73;
+            // 
+            // lvwgType
+            // 
+            this.lvwgType.Text = "Type";
+            this.lvwgType.Width = 43;
+            // 
+            // lvwgPath
+            // 
+            this.lvwgPath.Text = "Game Path";
+            this.lvwgPath.Width = 250;
+            // 
             // ShowMiiWads_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(922, 369);
+            this.Controls.Add(this.lvWiiGames);
             this.Controls.Add(this.lvQueue);
             this.Controls.Add(this.lvNand);
             this.Controls.Add(this.ssMain);
@@ -1722,6 +1815,17 @@ namespace ShowMiiWads
         private System.Windows.Forms.ToolStripMenuItem btnChinese;
         private System.Windows.Forms.ToolStripMenuItem cmNandPatchReturnTo;
         private System.Windows.Forms.ToolStripMenuItem btnCreateNANDFromScratch;
+        private System.Windows.Forms.ListView lvWiiGames;
+        private System.Windows.Forms.ColumnHeader lvwgId;
+        private System.Windows.Forms.ColumnHeader lvwgIOSrequired;
+        private System.Windows.Forms.ColumnHeader lvwgSize;
+        private System.Windows.Forms.ColumnHeader lvwgType;
+        private System.Windows.Forms.ColumnHeader lvwgPath;
+        private System.Windows.Forms.ColumnHeader lvwgTitle;
+        private System.Windows.Forms.ColumnHeader lvwgRegion;
+        private System.Windows.Forms.ColumnHeader lvwgCustomTitle;
+        private System.Windows.Forms.ToolStripMenuItem btnShowMiiWiiGames;
+        private System.Windows.Forms.ToolStripMenuItem btnWiiGamePath;
     }
 }
 
