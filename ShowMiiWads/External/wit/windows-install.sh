@@ -50,7 +50,12 @@ echo "* setup"
 
 export PATH=".:$PATH"
 
-WIN_PROG_PATH="$(regtool get /machine/SOFTWARE/Microsoft/Windows/CurrentVersion/ProgramFilesDir)"
+key="/machine/SOFTWARE/Microsoft/Windows/CurrentVersion/ProgramFilesDir"
+if ! WIN_PROG_PATH="$(regtool get "$key")" || [[ $WIN_PROG_PATH = "" ]]
+then
+    echo "Can't determine Windows program path => abort" >&2
+    exit 1
+fi
 CYGWIN_PROG_PATH="$( realpath "$WIN_PROG_PATH" )"
 
 WDEST="$WIN_PROG_PATH\\${WIN_INSTALL_PATH//\//\\}"
@@ -59,11 +64,12 @@ CDEST="$CYGWIN_PROG_PATH/$WIN_INSTALL_PATH"
 #------------------------------------------------------------------------------
 # install files
 
+# mkdir before testing the directory
+mkdir -p "$CDEST"
+
 if [[ $(stat -c%d-%i "$PWD") != "$(stat -c%d-%i "$CDEST")" ]]
 then
     echo "* install files to $WDEST"
-
-    mkdir -p "$CDEST"
     cp --preserve=time *.bat *.dll *.exe *.sh *.txt "$CDEST"
 fi
 

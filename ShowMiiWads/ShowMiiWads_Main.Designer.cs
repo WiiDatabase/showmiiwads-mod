@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System.Windows.Forms;
 namespace ShowMiiWads
 {
     partial class ShowMiiWads_Main
@@ -180,6 +181,8 @@ namespace ShowMiiWads
             this.lbQueueCount = new System.Windows.Forms.ToolStripStatusLabel();
             this.lbQueueInstall = new System.Windows.Forms.ToolStripStatusLabel();
             this.lbQueueDiscard = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lbQueueProgressETA = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lbQueueProgressGame = new System.Windows.Forms.ToolStripStatusLabel();
             this.lvNand = new System.Windows.Forms.ListView();
             this.lvNandName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvNandID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -217,10 +220,18 @@ namespace ShowMiiWads
             this.lvwgSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvwgType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvwgPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cmWiiGames = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmInstallWiiGame = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmInstallWiiGameFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmInstallWiiGameFolder = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.cmConvertGame = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmDeleteWiiGame = new System.Windows.Forms.ToolStripMenuItem();
             this.cmWads.SuspendLayout();
             this.msMain.SuspendLayout();
             this.ssMain.SuspendLayout();
             this.cmNand.SuspendLayout();
+            this.cmWiiGames.SuspendLayout();
             this.SuspendLayout();
             // 
             // lvWads
@@ -1255,7 +1266,9 @@ namespace ShowMiiWads
             this.lbQueue,
             this.lbQueueCount,
             this.lbQueueInstall,
-            this.lbQueueDiscard});
+            this.lbQueueDiscard,
+            this.lbQueueProgressETA,
+            this.lbQueueProgressGame});
             this.ssMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.ssMain.Location = new System.Drawing.Point(0, 347);
             this.ssMain.Name = "ssMain";
@@ -1332,6 +1345,23 @@ namespace ShowMiiWads
             this.lbQueueDiscard.Text = "Discard";
             this.lbQueueDiscard.Visible = false;
             this.lbQueueDiscard.Click += new System.EventHandler(this.lbQueueDiscard_Click);
+            // 
+            // lbQueueProgressETA
+            // 
+            this.lbQueueProgressETA.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.lbQueueProgressETA.Name = "lbQueueProgressETA";
+            this.lbQueueProgressETA.Size = new System.Drawing.Size(34, 17);
+            this.lbQueueProgressETA.Text = "ETA :";
+            this.lbQueueProgressETA.Visible = false;
+            // 
+            // lbQueueProgressGame
+            // 
+            this.lbQueueProgressGame.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.lbQueueProgressGame.Margin = new System.Windows.Forms.Padding(0, 3, 10, 2);
+            this.lbQueueProgressGame.Name = "lbQueueProgressGame";
+            this.lbQueueProgressGame.Size = new System.Drawing.Size(72, 17);
+            this.lbQueueProgressGame.Text = "Converting :";
+            this.lbQueueProgressGame.Visible = false;
             // 
             // lvNand
             // 
@@ -1558,6 +1588,7 @@ namespace ShowMiiWads
             // 
             // lvWiiGames
             // 
+            this.lvWiiGames.AllowColumnReorder = true;
             this.lvWiiGames.AllowDrop = true;
             this.lvWiiGames.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.lvwgId,
@@ -1576,6 +1607,10 @@ namespace ShowMiiWads
             this.lvWiiGames.TabIndex = 6;
             this.lvWiiGames.UseCompatibleStateImageBehavior = false;
             this.lvWiiGames.View = System.Windows.Forms.View.Details;
+            this.lvWiiGames.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvWiiGames_ColumnClick);
+            this.lvWiiGames.DragDrop += new System.Windows.Forms.DragEventHandler(this.lvWiiGames_DragDrop);
+            this.lvWiiGames.DragEnter += new System.Windows.Forms.DragEventHandler(this.lvWiiGames_DragEnter);
+            this.lvWiiGames.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lvWiiGames_MouseUp);
             this.lvWiiGames.Resize += new System.EventHandler(this.lvWiiGames_Resize);
             // 
             // lvwgId
@@ -1600,14 +1635,15 @@ namespace ShowMiiWads
             // 
             // lvwgRegion
             // 
-            this.lvwgRegion.Tag = "Numeric";
+            this.lvwgRegion.Tag = "";
             this.lvwgRegion.Text = "Region";
             this.lvwgRegion.Width = 50;
             // 
             // lvwgSize
             // 
-            this.lvwgSize.Tag = "";
+            this.lvwgSize.Tag = "Numeric";
             this.lvwgSize.Text = "Game Size";
+            this.lvwgSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.lvwgSize.Width = 73;
             // 
             // lvwgType
@@ -1619,6 +1655,58 @@ namespace ShowMiiWads
             // 
             this.lvwgPath.Text = "Game Path";
             this.lvwgPath.Width = 250;
+            // 
+            // cmWiiGames
+            // 
+            this.cmWiiGames.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmInstallWiiGame,
+            this.toolStripSeparator9,
+            this.cmConvertGame,
+            this.cmDeleteWiiGame});
+            this.cmWiiGames.Name = "cmNand";
+            this.cmWiiGames.Size = new System.Drawing.Size(153, 76);
+            // 
+            // cmInstallWiiGame
+            // 
+            this.cmInstallWiiGame.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmInstallWiiGameFile,
+            this.cmInstallWiiGameFolder});
+            this.cmInstallWiiGame.Name = "cmInstallWiiGame";
+            this.cmInstallWiiGame.Size = new System.Drawing.Size(152, 22);
+            this.cmInstallWiiGame.Text = "Install";
+            // 
+            // cmInstallWiiGameFile
+            // 
+            this.cmInstallWiiGameFile.Name = "cmInstallWiiGameFile";
+            this.cmInstallWiiGameFile.Size = new System.Drawing.Size(126, 22);
+            this.cmInstallWiiGameFile.Text = "Game File";
+            this.cmInstallWiiGameFile.Click += new System.EventHandler(this.cmInstallWiiGameFile_Click);
+            // 
+            // cmInstallWiiGameFolder
+            // 
+            this.cmInstallWiiGameFolder.Name = "cmInstallWiiGameFolder";
+            this.cmInstallWiiGameFolder.Size = new System.Drawing.Size(126, 22);
+            this.cmInstallWiiGameFolder.Text = "Folder";
+            this.cmInstallWiiGameFolder.Click += new System.EventHandler(this.cmInstallWiiGameFolder_Click);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(149, 6);
+            // 
+            // cmConvertGame
+            // 
+            this.cmConvertGame.Name = "cmConvertGame";
+            this.cmConvertGame.Size = new System.Drawing.Size(152, 22);
+            this.cmConvertGame.Text = "Convert to FST";
+            this.cmConvertGame.Click += new System.EventHandler(this.cmConvertGame_Click);
+            // 
+            // cmDeleteWiiGame
+            // 
+            this.cmDeleteWiiGame.Name = "cmDeleteWiiGame";
+            this.cmDeleteWiiGame.Size = new System.Drawing.Size(152, 22);
+            this.cmDeleteWiiGame.Text = "Delete";
+            this.cmDeleteWiiGame.Click += new System.EventHandler(this.cmDelete_Click);
             // 
             // ShowMiiWads_Main
             // 
@@ -1648,6 +1736,7 @@ namespace ShowMiiWads
             this.ssMain.ResumeLayout(false);
             this.ssMain.PerformLayout();
             this.cmNand.ResumeLayout(false);
+            this.cmWiiGames.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1826,6 +1915,15 @@ namespace ShowMiiWads
         private System.Windows.Forms.ColumnHeader lvwgCustomTitle;
         private System.Windows.Forms.ToolStripMenuItem btnShowMiiWiiGames;
         private System.Windows.Forms.ToolStripMenuItem btnWiiGamePath;
+        private System.Windows.Forms.ToolStripStatusLabel lbQueueProgressETA;
+        private ToolStripStatusLabel lbQueueProgressGame;
+        private ContextMenuStrip cmWiiGames;
+        private ToolStripMenuItem cmInstallWiiGame;
+        private ToolStripMenuItem cmInstallWiiGameFile;
+        private ToolStripMenuItem cmInstallWiiGameFolder;
+        private ToolStripSeparator toolStripSeparator9;
+        private ToolStripMenuItem cmConvertGame;
+        private ToolStripMenuItem cmDeleteWiiGame;
     }
 }
 

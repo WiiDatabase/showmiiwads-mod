@@ -22,6 +22,62 @@ namespace Wii
         public long size { get; set; }
         public GameType gameType { get; set; }
         public string gamePath { get; set; }
+
+        public WiiGame()
+        {
+            id = "";
+            title = "";
+            customTitle = "";
+            iosRequired = -1;
+            region = "";
+            size = -1;
+            gameType = GameType.unknown;
+            gamePath = "";
+        }
+
+        public override bool Equals(Object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            WiiGame p = obj as WiiGame;
+            if ((Object)p == null)
+            {
+                return false;
+            }
+
+            if (this.id.Equals(p.id) &&
+                this.title.Equals(p.title) &&
+                this.customTitle.Equals(p.customTitle) &&
+                this.iosRequired.Equals(p.iosRequired) &&
+                this.region.Equals(p.region) &&
+                this.size.Equals(p.size) &&
+                this.gameType.Equals(p.gameType) &&
+                this.gamePath.Equals(p.gamePath))
+            {
+
+                return true;
+            }
+            else { return false; }
+        }
+
+        public override int GetHashCode()
+        {
+            int result = 0;
+
+            result ^= id.GetHashCode();
+            result ^= title.GetHashCode();
+            result ^= customTitle.GetHashCode();
+            result ^= iosRequired.GetHashCode();
+            result ^= region.GetHashCode();
+            result ^= size.GetHashCode();
+            result ^= gameType.GetHashCode();
+            result ^= gamePath.GetHashCode();
+
+            return result;
+        }
     }
 
     public class WiimmsIsoTools
@@ -39,6 +95,10 @@ namespace Wii
         /// Fires estimated ETA of process.
         /// </summary>
         public event EventHandler<MessageEventArgs> ETA;
+        /// <summary>
+        /// Fires current extracted game.
+        /// </summary>
+        public event EventHandler<MessageEventArgs> GameName;
         /// <summary>
         /// Fires info when thread is finish.
         /// </summary>
@@ -109,6 +169,13 @@ namespace Wii
             EventHandler<MessageEventArgs> eta = ETA;
             if (eta != null)
                 eta(new object(), new MessageEventArgs(string.Format(Eta, args)));
+        }
+
+        private void fireGameName(string gameName, params object[] args)
+        {
+            EventHandler<MessageEventArgs> game = GameName;
+            if (game != null)
+                game(new object(), new MessageEventArgs(string.Format(gameName, args)));
         }
 
         private void fireThreadFinish(bool isInterrupted)
@@ -184,8 +251,13 @@ namespace Wii
 
                 if (!isStopRequired)
                 {
+                    this.fireProgress(0);
+                    this.fireETA(" ");
+
+                    this.fireGameName(game.customTitle);
+
                     processInfo = new ProcessStartInfo(witPath);
-                    processInfo.Arguments = @"extract --sneek -v -v -v " + game.gamePath + " " + this.gamesPathDirectory + Path.DirectorySeparatorChar + "\'[%I]\'";
+                    processInfo.Arguments = "extract --sneek -v -v -v  \"" + game.gamePath + "\" " + this.gamesPathDirectory + Path.DirectorySeparatorChar + "\'[%I]\'";
 
                     processInfo.UseShellExecute = false;
                     processInfo.CreateNoWindow = true;
@@ -205,6 +277,9 @@ namespace Wii
                     exitCode = witProcess.ExitCode;
 
                     witProcess.Close();
+                    
+                    this.fireProgress(100);
+                    this.fireETA(" ");
                 }
             }
 
@@ -304,6 +379,28 @@ namespace Wii
         public void IsStopRequired()
         {
             isStopRequired = false;
+        }
+
+        public static bool isSupportedGameFormat(string gamePath)
+        {
+            bool result = false;
+
+            if (!String.IsNullOrEmpty(gamePath))
+            {
+                string extension = gamePath.Remove(0, gamePath.LastIndexOf('.') + 1);
+
+                try
+                {
+                    GameType gt = (GameType)Enum.Parse(typeof(GameType), extension, true);
+                    result = true;
+                }
+                catch
+                {
+                    result = false;
+                }
+            }
+
+            return result;
         }
         #endregion
 

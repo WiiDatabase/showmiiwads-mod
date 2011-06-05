@@ -20,8 +20,8 @@
 ##                                                                 ##
 #####################################################################
 ##                                                                 ##
-##   This file is used to translate the version number of the wad  ##
-##   file name into the public system menu version.                ##
+##   This file is used to translate the version number of the      ##
+##   wad file name into the public system menu version.            ##
 ##                                                                 ##
 ##   Syntax:   wad_version_number = system menu version            ##
 ##                                                                 ##
@@ -68,7 +68,7 @@
  450 = 4.1E
  454 = 4.1K
 
- 480 = 4.2K
+ 480 = 4.2J
  481 = 4.2U
  482 = 4.2E
  486 = 4.2K

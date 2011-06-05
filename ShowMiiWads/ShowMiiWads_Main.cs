@@ -33,6 +33,7 @@ using InputBoxes;
 using libWiiSharp;
 using Wii;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace ShowMiiWads
 {
@@ -69,14 +70,17 @@ namespace ShowMiiWads
         //private string ckey = Application.StartupPath + "\\common-key.bin";
         //private string key = Application.StartupPath + "\\key.bin";
         private string[] mru = new string[5] { "", "", "", "", "" };
-        public static string TempPath = Path.GetTempPath() + "\\ShowMiiWads_WadTemp";
-        public string ListPath = Path.GetTempPath() + "\\ShowMiiWads.list";
-        public string ListPathNand = Path.GetTempPath() + "\\ShowMiiNand.list";
-        public string ListPathWiiGames = Path.GetTempPath() + "\\ShowMiiWiiGames.list";
-        private string CfgPath = Application.StartupPath + "\\ShowMiiWads.cfg";
-        private string SaveBackupPath = Application.StartupPath + "\\SaveDataBackups";
+        public static string TempPath = Path.GetTempPath() + Path.DirectorySeparatorChar + "ShowMiiWads_WadTemp";
+        public string ListPath = Path.GetTempPath() + Path.DirectorySeparatorChar + "ShowMiiWads.list";
+        public string ListPathNand = Path.GetTempPath() + Path.DirectorySeparatorChar + "ShowMiiNand.list";
+        public string ListPathWiiGames = Path.GetTempPath() + Path.DirectorySeparatorChar + "ShowMiiWiiGames.list";
+        private string CfgPath = Application.StartupPath + Path.DirectorySeparatorChar + "ShowMiiWads.cfg";
+        private string SaveBackupPath = Application.StartupPath + Path.DirectorySeparatorChar + "SaveDataBackups";
         private bool portable = false;
         private string lastPath = "";
+        private List<WiiGame> lvQueueWiiGames = new List<WiiGame>();
+        private Thread witThread = null;
+        private delegate void objectInvoker(object obj);
 
         public ShowMiiWads_Main()
         {
@@ -90,6 +94,7 @@ namespace ShowMiiWads
             //Define Sorter for lvWads
             lvWads.ListViewItemSorter = lvSorter;
             lvNand.ListViewItemSorter = lvSorter;
+            lvWiiGames.ListViewItemSorter = lvSorter;
             //Define Delegate for Drag & Drop action
             AddWadsDel = new DelegateAddWads(this.AddWads);
             AddWadsSubDel = new DelegateAddWadsSub(this.AddWadsSub);
@@ -766,6 +771,8 @@ namespace ShowMiiWads
                 }
             }
             catch { }
+
+            lbFileCount.Text = lvWiiGames.Items.Count.ToString();
         }
 
         /// <summary>
@@ -1743,7 +1750,7 @@ namespace ShowMiiWads
 
                 lvWads.Sort();
             }
-            else
+            else if (lvWads.Visible == true)
             {
                 if (File.Exists(ListPathNand))
                     LoadNewNand();
@@ -1751,6 +1758,15 @@ namespace ShowMiiWads
                     btnRefresh_Click(null, null);
 
                 lvNand.Sort();
+            }
+            else if (lvWiiGames.Visible == true)
+            {
+                if (File.Exists(ListPathWiiGames))
+                    LoadListWiiGames();
+                else
+                    btnRefresh_Click(null, null);
+
+                lvWiiGames.Sort();
             }
         }
 
@@ -1987,11 +2003,51 @@ namespace ShowMiiWads
             {
                 AddNand();
                 SaveListNand();
+
+                if (lvQueue.Items.Count > 0)
+                {
+                    lbQueue.Visible = true;
+                    lbQueueCount.Visible = true;
+                    lbQueueDiscard.Visible = true;
+                    lbQueueInstall.Visible = true;
+                    lbQueueProgressETA.Visible = false;
+                    lbQueueProgressGame.Visible = false;
+                    lbQueueCount.Text = lvQueue.Items.Count.ToString();
+                }
+                else
+                {
+                    lbQueue.Visible = false;
+                    lbQueueCount.Visible = false;
+                    lbQueueDiscard.Visible = false;
+                    lbQueueInstall.Visible = false;
+                    lbQueueProgressETA.Visible = false;
+                    lbQueueProgressGame.Visible = false;
+                }
             }
             else
             {
                 listWiiGame();
                 SaveListWiiGames();
+
+                if (lvQueueWiiGames.Count > 0)
+                {
+                    lbQueue.Visible = true;
+                    lbQueueCount.Visible = true;
+                    lbQueueDiscard.Visible = true;
+                    lbQueueInstall.Visible = true;
+                    lbQueueProgressETA.Visible = false;
+                    lbQueueProgressGame.Visible = false;
+                    lbQueueCount.Text = lvQueueWiiGames.Count.ToString();
+                }
+                else
+                {
+                    lbQueue.Visible = false;
+                    lbQueueCount.Visible = false;
+                    lbQueueDiscard.Visible = false;
+                    lbQueueInstall.Visible = false;
+                    lbQueueProgressETA.Visible = false;
+                    lbQueueProgressGame.Visible = false;
+                }
             }
         }
 
@@ -2225,7 +2281,7 @@ namespace ShowMiiWads
                     }
                 }
             }
-            else
+            else if (lvNand.Visible == true)
             {
                 pbProgress.Value = 0;
                 int counter = 0;
@@ -2261,6 +2317,30 @@ namespace ShowMiiWads
                 }
 
                 LoadNew();
+            }
+            else if (lvWiiGames.Visible == true)
+            {
+                if (lvWiiGames.SelectedItems.Count > 0)
+                {
+                    if (MessageBox.Show(string.Format(Messages[33], lvWiiGames.SelectedItems.Count), Messages[32], MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        for (int i = 0; i < lvWiiGames.SelectedItems.Count; i++)
+                        {
+                            string gamePath = lvWiiGames.SelectedItems[i].SubItems[7].Text;
+
+                            if (File.Exists(gamePath))
+                            {
+                                File.Delete(gamePath);
+                            }
+                            else if (Directory.Exists(gamePath))
+                            {
+                                Directory.Delete(gamePath, true);
+                            }
+                        }
+
+                        LoadNew();
+                    }
+                }
             }
         }
 
@@ -3286,6 +3366,18 @@ namespace ShowMiiWads
                 btnDelete.Enabled = true;
                 btnRestore.Enabled = false;
             }
+
+            if (lvWiiGames.Visible == true)
+            {
+                DisableButtons();
+
+                btnCopy.Enabled = false;
+                btnCut.Enabled = false;
+                btnPaste.Enabled = false;
+                btnRename.Enabled = false;
+                btnDelete.Enabled = true;
+                btnRestore.Enabled = false;
+            }
         }
 
         private void mruItems_Click(object sender, EventArgs e)
@@ -3368,6 +3460,8 @@ namespace ShowMiiWads
                 lbQueueCount.Text = "0";
                 lbQueueDiscard.Visible = false;
                 lbQueueInstall.Visible = false;
+                lbQueueProgressETA.Visible = false;
+                lbQueueProgressGame.Visible = false;
 
                 this.Text = "ShowMiiWads " + version + " by Leathl (mod by orwel)";
 
@@ -3402,6 +3496,8 @@ namespace ShowMiiWads
                     lbFolders.Text = "";
                     lbFolderCount.Text = "";
                     lbFileCount.Text = "0";
+                    lbQueueProgressETA.Visible = false;
+                    lbQueueProgressGame.Visible = false;
 
                     this.Text = "ShowMiiNand " + version + " by Leathl (mod by orwel)";
 
@@ -3429,22 +3525,48 @@ namespace ShowMiiWads
                 {
                     btnShowMiiWads.Checked = false;
                     btnShowMiiNand.Checked = false;
-                    if (File.Exists(ListPathWiiGames))
-                        LoadListWiiGames();
 
                     lbFiles.Text = Messages[86] + ":";
                     lbFolders.Text = "";
                     lbFolderCount.Text = "";
-                    lbFileCount.Text = lvWiiGames.Items.Count.ToString();
-
-                    this.Text = "ShowMiiWiiGames " + version + " by orwel";
+                    lbQueueProgressETA.Text = "";
+                    
+                    this.Text = "ShowMiiWiiGames by orwel";
 
                     lvWads.Visible = false;
                     lvNand.Visible = false;
                     lvWiiGames.Visible = true;
 
-                    if (!File.Exists(ListPathWiiGames))
+                    if (File.Exists(ListPathWiiGames))
+                    {
+                        LoadListWiiGames();
+
+                        if (lvQueueWiiGames.Count > 0)
+                        {
+                            lbQueue.Visible = true;
+                            lbQueueCount.Visible = true;
+                            lbQueueDiscard.Visible = true;
+                            lbQueueInstall.Visible = true;
+                            lbQueueProgressETA.Visible = false;
+                            lbQueueProgressGame.Visible = false;
+                            lbQueueCount.Text = lvQueueWiiGames.Count.ToString();
+                        }
+                        else
+                        {
+                            lbQueue.Visible = false;
+                            lbQueueCount.Visible = false;
+                            lbQueueDiscard.Visible = false;
+                            lbQueueInstall.Visible = false;
+                            lbQueueProgressETA.Visible = false;
+                            lbQueueProgressGame.Visible = false;
+                        }
+                    }
+                    else
+                    {
                         btnRefresh_Click(null, null);
+                    }
+
+                    lbFileCount.Text = lvWiiGames.Items.Count.ToString();
                 }
                 else
                 {
@@ -3689,42 +3811,59 @@ namespace ShowMiiWads
 
         private void lbQueueDiscard_Click(object sender, EventArgs e)
         {
-            lvQueue.Items.Clear();
+            if (lvNand.Visible == true)
+            {
+                lvQueue.Items.Clear();
+            }
+            else
+            {
+                lvQueueWiiGames.Clear();
+            }
+
             lbQueue.Visible = false;
             lbQueueCount.Visible = false;
             lbQueueCount.Text = "0";
             lbQueueDiscard.Visible = false;
             lbQueueInstall.Visible = false;
+            lbQueueProgressETA.Visible = false;
+            lbQueueProgressGame.Visible = false;
         }
 
         private void lbQueueInstall_Click(object sender, EventArgs e)
         {
-            pbProgress.Tag = "NoProgress";
-            Cursor.Current = Cursors.WaitCursor;
-
-            for (int i = 0; i < lvQueue.Items.Count; i++)
+            if (lvNand.Visible == true)
             {
-                pbProgress.Value = (i + 1) * 100 / lvQueue.Items.Count;
+                pbProgress.Tag = "NoProgress";
+                Cursor.Current = Cursors.WaitCursor;
 
-                if (File.Exists((string)lvQueue.Items[i]))
+                for (int i = 0; i < lvQueue.Items.Count; i++)
                 {
-                    CopyToNand((string)lvQueue.Items[i]);
+                    pbProgress.Value = (i + 1) * 100 / lvQueue.Items.Count;
+
+                    if (File.Exists((string)lvQueue.Items[i]))
+                    {
+                        CopyToNand((string)lvQueue.Items[i]);
+                    }
                 }
+
+                Cursor.Current = Cursors.Default;
+                pbProgress.Tag = "";
+                pbProgress.Value = 100;
+
+                lbQueueCount.Text = "0";
+                lbQueueCount.Visible = false;
+                lbQueue.Visible = false;
+                lbQueueInstall.Visible = false;
+                lbQueueDiscard.Visible = false;
+
+                lvQueue.Items.Clear();
+
+                LoadNew();
             }
-
-            Cursor.Current = Cursors.Default;
-            pbProgress.Tag = "";
-            pbProgress.Value = 100;
-
-            lbQueueCount.Text = "0";
-            lbQueueCount.Visible = false;
-            lbQueue.Visible = false;
-            lbQueueInstall.Visible = false;
-            lbQueueDiscard.Visible = false;
-
-            lvQueue.Items.Clear();
-
-            LoadNew();
+            else
+            {
+                this.convertWiiGame();
+            }
         }
 
         private void cmInstallWad_Click(object sender, EventArgs e)
@@ -5060,6 +5199,57 @@ namespace ShowMiiWads
             }
         }
 
+        private void lvWiiGames_ColumnClick(object sender, System.Windows.Forms.ColumnClickEventArgs e)
+        {
+            if (e.Column == lvSorter.SortColumn)
+            {
+                if (lvSorter.Order == SortOrder.Ascending)
+                {
+                    lvSorter.Order = SortOrder.Descending;
+                }
+                else
+                {
+                    lvSorter.Order = SortOrder.Ascending;
+                }
+            }
+            else
+            {
+                lvSorter.Order = SortOrder.Ascending;
+            }
+
+            lvSorter.Column = e.Column;
+            lvSorter.SortColumn = e.Column;
+            lvWiiGames.Sort();
+        }
+
+        private void lvWiiGames_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (lvWiiGames.SelectedItems.Count > 0)
+                {
+                    this.cmDeleteWiiGame.Enabled = true;
+
+                    if (lvWiiGames.SelectedItems.Count == 1 &&
+                        !this.lvWiiGames.SelectedItems[0].SubItems[6].Text.Equals(GameType.fst.ToString()))
+                    {
+                        this.cmConvertGame.Enabled = true;
+                    }
+                    else
+                    {
+                        this.cmConvertGame.Enabled = false;
+                    }
+                }
+                else
+                {
+                    this.cmDeleteWiiGame.Enabled = false;
+                    this.cmConvertGame.Enabled = false;
+                }
+
+                cmWiiGames.Show(lvWiiGames, e.Location);
+            }
+        }
+
         private void lvWiiGames_Resize(object sender, System.EventArgs e)
         {
             if (autosize == "true")
@@ -5082,6 +5272,94 @@ namespace ShowMiiWads
             }
         }
 
+        private void lvWiiGames_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            string[] drop = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            putGameOnLvQueue(drop);
+        }
+
+        private void lvWiiGames_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            if (!String.IsNullOrEmpty(this.WiiGamePath) && e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] drop = (string[])e.Data.GetData(DataFormats.FileDrop);
+                bool right = true;
+
+                for (int i = 0; i < drop.Length; i++)
+                {
+                    if (File.Exists(drop[i]) && !WiimmsIsoTools.isSupportedGameFormat(drop[i]))
+                    {
+                        right = false;
+                    }
+                }
+
+                if (right == true)
+                {
+                    e.Effect = DragDropEffects.All;
+                }
+                else
+                {
+                    e.Effect = DragDropEffects.None;
+                }
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void putGameOnLvQueue(string[] gamesPath)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+
+            WiimmsIsoTools wit = new WiimmsIsoTools();
+
+            if (gamesPath != null)
+            {
+                foreach (string gamePath in gamesPath)
+                {
+                    switch (language)
+                    {
+                        case "Dutch":
+                            lvQueueWiiGames.AddRange(wit.ListGames(gamePath, "nl"));
+                            break;
+                        case "Italian":
+                            lvQueueWiiGames.AddRange(wit.ListGames(gamePath, "it"));
+                            break;
+                        case "Spanish":
+                            lvQueueWiiGames.AddRange(wit.ListGames(gamePath, "es"));
+                            break;
+                        case "French":
+                            lvQueueWiiGames.AddRange(wit.ListGames(gamePath, "fr"));
+                            break;
+                        case "German":
+                            lvQueueWiiGames.AddRange(wit.ListGames(gamePath, "de"));
+                            break;
+                        case "Japanese":
+                            lvQueueWiiGames.AddRange(wit.ListGames(gamePath, "ja"));
+                            break;
+                        default:
+                            lvQueueWiiGames.AddRange(wit.ListGames(gamePath, null));
+                            break;
+                    }
+                }
+
+                if (lvQueueWiiGames.Count > 0)
+                {
+                    lbQueue.Visible = true;
+                    lbQueueCount.Visible = true;
+                    lbQueueDiscard.Visible = true;
+                    lbQueueInstall.Visible = true;
+                    lbQueueProgressETA.Visible = false;
+                    lbQueueProgressGame.Visible = false;
+                    lbQueueCount.Text = lvQueueWiiGames.Count.ToString();
+                }
+
+                Cursor.Current = Cursors.Default;
+            }
+        }
+        
         private void listWiiGame()
         {
             lvWiiGames.Items.Clear();
@@ -5119,7 +5397,6 @@ namespace ShowMiiWads
                         break;
                 }
 
-
                 foreach (WiiGame game in gameList)
                 {
                     lvWiiGames.Items.Add(new ListViewItem(new string[] { game.id, game.title, game.customTitle, "IOS " + game.iosRequired.ToString(), game.region, game.size.ToString(), game.gameType.ToString(), game.gamePath }));
@@ -5142,6 +5419,115 @@ namespace ShowMiiWads
             Cursor.Current = Cursors.Default;
         }
 
-    
+        private void convertWiiGame_Progress(object sender, Wii.ProgressChangedEventArgs e)
+        {
+            objectInvoker v = new objectInvoker(this.updateProgress);
+            this.Invoke(v, e.PercentProgress);
+        }
+
+        private void updateProgress(object value)
+        {
+            this.pbProgress.Value = (int)value;
+        }
+
+        private void convertWiiGame_ETA(object sender, Wii.MessageEventArgs e)
+        {
+            objectInvoker v = new objectInvoker(this.updateETA);
+            this.Invoke(v, e.Message);
+        }
+
+        private void updateETA(object value)
+        {
+            this.lbQueueProgressETA.Text = "ETA : " + (string)value;
+        }
+
+        private void convertWiiGame_Name(object sender, Wii.MessageEventArgs e)
+        {
+            objectInvoker v = new objectInvoker(this.updateGameName);
+            this.Invoke(v, e.Message);
+        }
+
+        private void updateGameName(object value)
+        {
+            this.lbQueueProgressGame.Text = "Converting " + (string)value;
+        }
+
+        private void convertWiiGame_End(object sender, Wii.ThreadFinishEventArgs e)
+        {
+            objectInvoker v = new objectInvoker(this.EndConvertWiiGames);
+            this.Invoke(v, e.IsThreadInterrupted);
+        }
+
+        private void convertWiiGame()
+        {
+            if (!String.IsNullOrEmpty(this.WiiGamePath) &&
+                this.witThread == null)
+            {
+                this.lbQueueProgressETA.Text = "";
+                this.lbQueueProgressETA.Visible = true;
+                this.lbQueueProgressGame.Text = "";
+                this.lbQueueProgressGame.Visible = true;
+
+                WiimmsIsoTools wit = new WiimmsIsoTools(this.WiiGamePath, this.lvQueueWiiGames);
+
+                wit.Progress += new EventHandler<Wii.ProgressChangedEventArgs>(this.convertWiiGame_Progress);
+                wit.ETA += new EventHandler<Wii.MessageEventArgs>(this.convertWiiGame_ETA);
+                wit.GameName += new EventHandler<Wii.MessageEventArgs>(this.convertWiiGame_Name);
+                wit.ThreadFinish += new EventHandler<ThreadFinishEventArgs>(this.convertWiiGame_End);
+
+                this.witThread = new Thread(new ThreadStart(wit.ExtractGames));
+                this.witThread.Start();
+            }
+        }
+
+        private void EndConvertWiiGames(object isThreadInterrupted)
+        {
+            lvQueueWiiGames.Clear();
+            lbQueue.Visible = false;
+            lbQueueCount.Visible = false;
+            lbQueueCount.Text = "0";
+            lbQueueDiscard.Visible = false;
+            lbQueueInstall.Visible = false;
+            lbQueueProgressETA.Visible = false;
+
+            if (isThreadInterrupted != null && !(bool)isThreadInterrupted)
+            {
+                lbQueueProgressGame.Text = "Done";
+            }
+            else
+            {
+                lbQueueProgressGame.Visible = false;
+            }
+
+            this.witThread = null;
+            LoadNew();
+        }
+
+        private void cmConvertGame_Click(object sender, EventArgs e)
+        {
+            this.putGameOnLvQueue(new string[] { this.lvWiiGames.SelectedItems[0].SubItems[7].Text });
+        }
+
+        private void cmInstallWiiGameFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Iso File (*.iso)|*.iso|Wdf File (*.wdf)|*.wdf|Wia File (*.wia)|*.wia|Ciso File (*.ciso)|*.ciso|Wbi File (*.wbi)|*.wbi|Wbfs File (*.wbfs)|*.wbfs|All Files (*.*)|*.*";
+            ofd.Multiselect = true;
+            
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                this.putGameOnLvQueue(ofd.FileNames);
+            }
+        }
+
+        private void cmInstallWiiGameFolder_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                this.putGameOnLvQueue(new string[] { fbd.SelectedPath });
+            }
+        }
     }
 }
