@@ -5500,7 +5500,7 @@ namespace ShowMiiWads
             }
 
             this.witThread = null;
-            LoadNew();
+            btnRefresh_Click(null, null);
         }
 
         private void cmConvertGame_Click(object sender, EventArgs e)
