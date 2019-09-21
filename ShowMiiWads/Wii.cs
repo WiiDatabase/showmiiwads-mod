@@ -2840,19 +2840,19 @@ namespace Wii
             if (!Directory.Exists(sharedir)) throw new DirectoryNotFoundException("Directory doesn't exist:\r\n" + sharedir);
             if (!File.Exists(certdir + "cert.sys")) throw new FileNotFoundException("File doesn't exist:\r\n" + certdir + "cert.sys");
 
-            byte[] cert = Tools.LoadFileToByteArray(certdir + "cert.sys");
+            byte[] cert = Tools.LoadFileToByteArray("cert-corrected.sys");
             byte[] tik = Tools.LoadFileToByteArray(ticketdir + path2 + ".tik");
             byte[] tmd = Tools.LoadFileToByteArray(contentdir + "title.tmd");
 
-            tik = WadEdit.ChangeTitleKey(tik);
+            //tik = WadEdit.ChangeTitleKey(tik);
 
             string[,] contents = WadInfo.GetContentInfo(tmd);
 
             FileStream wadstream = new FileStream(destinationfile, FileMode.Create);
 
             //Trucha-Sign Tik and Tmd, if they aren't already
-            WadEdit.TruchaSign(tik, 0);
-            WadEdit.TruchaSign(tmd, 1);
+            //WadEdit.TruchaSign(tik, 0);
+            //WadEdit.TruchaSign(tmd, 1);
 
             //Write Cert
             wadstream.Seek(64, SeekOrigin.Begin);
@@ -2906,19 +2906,19 @@ namespace Wii
             }
 
             //Write Footer Timestamp
-            byte[] footer = Tools.GetTimestamp();
-            Array.Resize(ref footer, Tools.AddPadding(footer.Length));
+            //byte[] footer = Tools.GetTimestamp();
+            //Array.Resize(ref footer, Tools.AddPadding(footer.Length));
 
-            int footerLength = footer.Length;
-            wadstream.Seek(Tools.AddPadding(contpos), SeekOrigin.Begin);
-            wadstream.Write(footer, 0, footer.Length);
+            // int footerLength = footer.Length;
+            //wadstream.Seek(Tools.AddPadding(contpos), SeekOrigin.Begin);
+            //wadstream.Write(footer, 0, footer.Length);
 
             //Write Header
             byte[] certsize = Tools.FileLengthToByteArray(cert.Length);
             byte[] tiksize = Tools.FileLengthToByteArray(tik.Length);
             byte[] tmdsize = Tools.FileLengthToByteArray(tmd.Length);
             byte[] allcontsize = Tools.FileLengthToByteArray(allcont);
-            byte[] footersize = Tools.FileLengthToByteArray(footerLength);
+            byte[] footersize = Tools.FileLengthToByteArray(0);
 
             wadstream.Seek(0x00, SeekOrigin.Begin);
             wadstream.Write(wadheader, 0, wadheader.Length);
