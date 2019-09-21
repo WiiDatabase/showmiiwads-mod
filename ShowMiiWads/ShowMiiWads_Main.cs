@@ -40,7 +40,7 @@ namespace ShowMiiWads
     public partial class ShowMiiWads_Main : Form
     {
         //Define global variables
-        public const string version = "1.5";
+        public const string version = "1.5.1";
         private string language = "English";
         private string langfile = "";
         private string oldlang = "";
@@ -90,7 +90,7 @@ namespace ShowMiiWads
             //Display WaitCursor
             Cursor.Current = Cursors.WaitCursor;
             //Set Caption
-            this.Text = "ShowMiiWads " + version + " by Leathl (mod by orwel)";
+            this.Text = "ShowMiiWads " + version + " by Leathl (mod by orwel & Brawl)";
             //Define Sorter for lvWads
             lvWads.ListViewItemSorter = lvSorter;
             lvNand.ListViewItemSorter = lvSorter;
@@ -3463,7 +3463,7 @@ namespace ShowMiiWads
                 lbQueueProgressETA.Visible = false;
                 lbQueueProgressGame.Visible = false;
 
-                this.Text = "ShowMiiWads " + version + " by Leathl (mod by orwel)";
+                this.Text = "ShowMiiWads " + version + " by Leathl (mod by orwel & Brawl)";
 
                 lvWads.Visible = true;
                 lvNand.Visible = false;
@@ -3499,7 +3499,7 @@ namespace ShowMiiWads
                     lbQueueProgressETA.Visible = false;
                     lbQueueProgressGame.Visible = false;
 
-                    this.Text = "ShowMiiNand " + version + " by Leathl (mod by orwel)";
+                    this.Text = "ShowMiiNand " + version + " by Leathl (mod by orwel & Brawl)";
 
                     lvWads.Visible = false;
                     lvNand.Visible = true;

@@ -1,7 +1,7 @@
 ﻿/* This file is part of ShowMiiWads (Original code by Ben Wilson, Thanks!)
  * Copyright (C) 2009 Ben Wilson
  * 
- * Mod by orwel
+ * Mod by orwel & Brawl (wiidatabase.de)
  * 
  * ShowMiiWads is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as published

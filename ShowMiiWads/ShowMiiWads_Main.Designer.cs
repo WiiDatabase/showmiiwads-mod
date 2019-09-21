@@ -1723,7 +1723,7 @@ namespace ShowMiiWads
             this.MinimumSize = new System.Drawing.Size(930, 396);
             this.Name = "ShowMiiWads_Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "ShowMiiWads by Leathl (mod by orwel)";
+            this.Text = "ShowMiiWads by Leathl (mod by orwel & Brawl)";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ShowMiiWads_FormClosed);
             this.Load += new System.EventHandler(this.Main_Load);
