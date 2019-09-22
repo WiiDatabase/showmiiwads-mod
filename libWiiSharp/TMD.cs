@@ -35,6 +35,7 @@ namespace libWiiSharp
         USA = 1,
         Europe = 2,
         Free = 3,
+        Korea = 4,
     }
 
     public class TMD : IDisposable

@@ -25,6 +25,7 @@ namespace libWiiSharp
     {
         Standard = 0x00,
         Korean = 0x01,
+        vWii = 0x02,
     }
 
     public class Ticket : IDisposable
@@ -532,7 +533,19 @@ namespace libWiiSharp
 
         private void decryptTitleKey()
         {
-            byte[] ckey = (commonKeyIndex == 0x01) ? CommonKey.GetKoreanKey() : CommonKey.GetStandardKey();
+            byte[] ckey;
+            switch (commonKeyIndex)
+            {
+                default:
+                    ckey = CommonKey.GetStandardKey();
+                    break;
+                case 0x01:
+                    ckey = CommonKey.GetKoreanKey();
+                    break;
+                case 0x02:
+                    ckey = CommonKey.GetvWiiKey();
+                    break;
+            }
             byte[] iv = BitConverter.GetBytes(Shared.Swap(titleId));
             Array.Resize(ref iv, 16);
 
@@ -560,7 +573,19 @@ namespace libWiiSharp
         private void encryptTitleKey()
         {
             commonKeyIndex = newKeyIndex;
-            byte[] ckey = (commonKeyIndex == 0x01) ? CommonKey.GetKoreanKey() : CommonKey.GetStandardKey();
+            byte[] ckey = CommonKey.GetStandardKey();
+            switch (commonKeyIndex)
+            {
+                default:
+                    ckey = CommonKey.GetStandardKey();
+                    break;
+                case 0x01:
+                    ckey = CommonKey.GetKoreanKey();
+                    break;
+                case 0x02:
+                    ckey = CommonKey.GetvWiiKey();
+                    break;
+            }
             byte[] iv = BitConverter.GetBytes(Shared.Swap(titleId));
             Array.Resize(ref iv, 16);
 

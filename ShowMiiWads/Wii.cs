@@ -1326,6 +1326,8 @@ namespace Wii
 
             byte[] encryptedkey = new byte[16];
             byte[] iv = new byte[16];
+            byte[] ckey;
+            byte ckeyindex;
             int tikpos = 0;
 
             if (IsThisWad(wadtik) == true)
@@ -1345,13 +1347,27 @@ namespace Wii
                 iv[j + 8] = 0x00;
             }
 
+            ckeyindex = wadtik[tikpos + 0x1f1];
+
+            switch (ckeyindex)
+            {
+                default:
+                    ckey = libWiiSharp.CommonKey.GetStandardKey();
+                    break;
+                case 0x01:
+                    ckey = libWiiSharp.CommonKey.GetKoreanKey();
+                    break;
+                case 0x02:
+                    ckey = libWiiSharp.CommonKey.GetvWiiKey();
+                    break;
+            }
+
             RijndaelManaged decrypt = new RijndaelManaged();
             decrypt.Mode = CipherMode.CBC;
             decrypt.Padding = PaddingMode.None;
             decrypt.KeySize = 128;
             decrypt.BlockSize = 128;
-            //decrypt.Key = commonkey;
-            decrypt.Key = libWiiSharp.CommonKey.GetStandardKey();
+            decrypt.Key = ckey;
             decrypt.IV = iv;
 
             ICryptoTransform cryptor = decrypt.CreateDecryptor();

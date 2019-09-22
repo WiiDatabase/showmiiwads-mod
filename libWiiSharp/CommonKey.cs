@@ -21,6 +21,7 @@ namespace libWiiSharp
     {
         private static string standardKey = "ebe42a225e8593e448d9c5457381aaf7";
         private static string koreanKey = "63b82bb4f4614e2e13f2fefbba4c9b7e";
+        private static string vwiiKey = "30bfc76e7c19afbb23163330ced7c28d";
 
         public static byte[] GetStandardKey()
         {
@@ -30,6 +31,11 @@ namespace libWiiSharp
         public static byte[] GetKoreanKey()
         {
             return Shared.HexStringToByteArray(koreanKey);
+        }
+
+        public static byte[] GetvWiiKey()
+        {
+            return Shared.HexStringToByteArray(vwiiKey);
         }
     }
 }
