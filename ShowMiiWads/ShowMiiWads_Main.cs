@@ -3281,7 +3281,7 @@ namespace ShowMiiWads
                     string wadfile = lvWads.SelectedItems[0].Group.Tag.ToString() + "\\" + lvWads.SelectedItems[0].Text;
                     string[] oldtitles = Wii.WadInfo.GetChannelTitles(lvWads.SelectedItems[0].Group.Tag.ToString() + "\\" + lvWads.SelectedItems[0].Text);
 
-                    if (oldtitles[1].Length != 0)
+                    if (Array.Exists(oldtitles, title => title != null && title.Length > 0))
                     {
                         string[] oldvalues = new string[] { oldtitles[0], oldtitles[1], oldtitles[2], oldtitles[3], oldtitles[4], oldtitles[5], oldtitles[6], oldtitles[7] };
                         ChannelNameDialog cld = new ChannelNameDialog();
